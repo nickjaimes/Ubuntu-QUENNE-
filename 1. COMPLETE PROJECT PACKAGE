@@ -1,0 +1,4129 @@
+Ubuntu-QUENNE Complete Project Package
+
+I'll create a comprehensive project package for Ubuntu-QUENNE with Ubuntu-specific adaptations, snap packaging, cloud-init integration, and enterprise features.
+
+```bash
+# File: PROJECT-STRUCTURE.md
+ubuntu-quenne/
+├── LICENSE
+├── README.md
+├── ARCHITECTURE.md
+├── CONTRIBUTING.md
+├── GOVERNANCE.md
+├── ROADMAP.md
+├── CODE_OF_CONDUCT.md
+├── Makefile
+├── requirements.txt
+├── setup.py
+├── pyproject.toml
+├── snapcraft.yaml
+├── debian/
+│   ├── control
+│   ├── rules
+│   ├── changelog
+│   └── copyright
+├── charmcraft.yaml
+├── .gitignore
+├── .dockerignore
+├── .github/
+│   ├── workflows/
+│   │   ├── build.yml
+│   │   ├── test.yml
+│   │   ├── snap.yml
+│   │   ├── deb.yml
+│   │   ├── release.yml
+│   │   └── security-scan.yml
+│   ├── ISSUE_TEMPLATE/
+│   │   ├── bug_report.md
+│   │   ├── feature_request.md
+│   │   └── security_issue.md
+│   └── PULL_REQUEST_TEMPLATE.md
+├── docs/
+│   ├── index.md
+│   ├── getting-started.md
+│   ├── architecture/
+│   │   ├── overview.md
+│   │   ├── triad-ai.md
+│   │   ├── kernel-extensions.md
+│   │   ├── intent-governance.md
+│   │   └── ubuntu-integration.md
+│   ├── api/
+│   │   ├── rest-api.md
+│   │   ├── grpc-api.md
+│   │   └── sdk-reference.md
+│   ├── deployment/
+│   │   ├── quickstart.md
+│   │   ├── production.md
+│   │   ├── kubernetes.md
+│   │   ├── edge.md
+│   │   ├── snap.md
+│   │   ├── maas.md
+│   │   └── cloud-init.md
+│   ├── guides/
+│   │   ├── intent-authoring.md
+│   │   ├── security-hardening.md
+│   │   ├── performance-tuning.md
+│   │   ├── ubuntu-pro.md
+│   │   └── troubleshooting.md
+│   └── whitepaper.pdf
+├── src/
+│   ├── quenne/
+│   │   ├── __init__.py
+│   │   ├── cli.py
+│   │   ├── api/
+│   │   │   ├── __init__.py
+│   │   │   ├── server.py
+│   │   │   ├── routes.py
+│   │   │   └── middleware.py
+│   │   ├── triad/
+│   │   │   ├── __init__.py
+│   │   │   ├── michael/
+│   │   │   │   ├── __init__.py
+│   │   │   │   ├── engine.py
+│   │   │   │   ├── policies.py
+│   │   │   │   ├── models.py
+│   │   │   │   └── api.py
+│   │   │   ├── gabriel/
+│   │   │   │   ├── __init__.py
+│   │   │   │   ├── scheduler.py
+│   │   │   │   ├── optimizer.py
+│   │   │   │   ├── resources.py
+│   │   │   │   └── api.py
+│   │   │   └── raphael/
+│   │   │       ├── __init__.py
+│   │   │       ├── healer.py
+│   │   │       ├── detector.py
+│   │   │       ├── remediator.py
+│   │   │       └── api.py
+│   │   ├── consensus/
+│   │   │   ├── __init__.py
+│   │   │   ├── engine.py
+│   │   │   ├── agents.py
+│   │   │   ├── knowledge_graph.py
+│   │   │   └── protocols.py
+│   │   ├── governance/
+│   │   │   ├── __init__.py
+│   │   │   ├── intent/
+│   │   │   │   ├── __init__.py
+│   │   │   │   ├── compiler.py
+│   │   │   │   ├── validator.py
+│   │   │   │   ├── parser.py
+│   │   │   │   └── examples/
+│   │   │   ├── policies/
+│   │   │   │   ├── __init__.py
+│   │   │   │   ├── generator.py
+│   │   │   │   ├── enforcer.py
+│   │   │   │   └── repository.py
+│   │   │   └── lifecycle/
+│   │   │       ├── __init__.py
+│   │   │       ├── manager.py
+│   │   │       ├── state_machine.py
+│   │   │       └── reconciler.py
+│   │   ├── kernel/
+│   │   │   ├── __init__.py
+│   │   │   ├── ebpf/
+│   │   │   │   ├── __init__.py
+│   │   │   │   ├── loader.py
+│   │   │   │   ├── programs/
+│   │   │   │   └── telemetry.py
+│   │   │   ├── security/
+│   │   │   │   ├── __init__.py
+│   │   │   │   ├── asm.py
+│   │   │   │   ├── hooks.py
+│   │   │   │   └── policies.py
+│   │   │   └── scheduler/
+│   │   │       ├── __init__.py
+│   │   │       ├── cognitive.py
+│   │   │       ├── energy.py
+│   │   │       └── metrics.py
+│   │   ├── fabric/
+│   │   │   ├── __init__.py
+│   │   │   ├── cloud/
+│   │   │   │   ├── __init__.py
+│   │   │   │   ├── aws.py
+│   │   │   │   ├── azure.py
+│   │   │   │   ├── gcp.py
+│   │   │   │   └── openstack.py
+│   │   │   ├── edge/
+│   │   │   │   ├── __init__.py
+│   │   │   │   ├── ubuntu_core.py
+│   │   │   │   ├── iot.py
+│   │   │   │   └── gateway.py
+│   │   │   ├── device/
+│   │   │   │   ├── __init__.py
+│   │   │   │   └── manager.py
+│   │   │   └── orchestrator.py
+│   │   ├── security/
+│   │   │   ├── __init__.py
+│   │   │   ├── zero_trust.py
+│   │   │   ├── crypto.py
+│   │   │   ├── identity.py
+│   │   │   ├── audit.py
+│   │   │   └── ubuntu_pro.py
+│   │   └── utils/
+│   │       ├── __init__.py
+│   │       ├── logging.py
+│   │       ├── metrics.py
+│   │       ├── config.py
+│   │       ├── validation.py
+│   │       └── ubuntu/
+│   │           ├── __init__.py
+│   │           ├── snap.py
+│   │           ├── maas.py
+│   │           ├── landscape.py
+│   │           └── cloud_init.py
+│   ├── protos/
+│   │   ├── quenne.proto
+│   │   ├── intent.proto
+│   │   ├── triad.proto
+│   │   └── consensus.proto
+│   └── scripts/
+│       ├── build-kernel.sh
+│       ├── deploy-ubuntu.sh
+│       ├── backup.sh
+│       ├── security-harden.sh
+│       └── ubuntu-pro-setup.sh
+├── kernel/
+│   ├── patches/
+│   │   ├── ubuntu-quenne-scheduler.patch
+│   │   ├── ubuntu-quenne-ebpf.patch
+│   │   ├── ubuntu-quenne-security.patch
+│   │   └── ubuntu-hwe.patch
+│   ├── configs/
+│   │   ├── ubuntu-generic.config
+│   │   ├── ubuntu-hwe.config
+│   │   └── ubuntu-edge.config
+│   └── modules/
+│       ├── Makefile
+│       ├── ubuntu_quenne_cognitive.c
+│       └── ubuntu_quenne_telemetry.c
+├── ebpf/
+│   ├── programs/
+│   │   ├── adaptive_monitor.c
+│   │   ├── security_detector.c
+│   │   ├── network_fabric.c
+│   │   ├── scheduler_hint.c
+│   │   └── ubuntu_livepatch.c
+│   ├── loaders/
+│   │   ├── loader.py
+│   │   └── manager.py
+│   └── maps/
+│       └── definitions.h
+├── configs/
+│   ├── ubuntu-quenne.yaml
+│   ├── michael.yaml
+│   ├── gabriel.yaml
+│   ├── raphael.yaml
+│   ├── consensus.yaml
+│   └── examples/
+│       ├── intent-web-service.yaml
+│       ├── intent-database.yaml
+│       ├── intent-edge-ai.yaml
+│       ├── intent-ubuntu-core.yaml
+│       └── intent-maas-cluster.yaml
+├── tests/
+│   ├── unit/
+│   │   ├── test_michael.py
+│   │   ├── test_gabriel.py
+│   │   ├── test_raphael.py
+│   │   ├── test_intent.py
+│   │   └── test_ubuntu_integration.py
+│   ├── integration/
+│   │   ├── test_triad_integration.py
+│   │   ├── test_consensus.py
+│   │   ├── test_governance.py
+│   │   └── test_ubuntu_ecosystem.py
+│   ├── performance/
+│   │   ├── benchmark.py
+│   │   └── load_test.py
+│   └── chaos/
+│       ├── network_partition.py
+│       ├── node_failure.py
+│       └── resource_exhaustion.py
+├── deployment/
+│   ├── ansible/
+│   │   ├── inventory/
+│   │   ├── group_vars/
+│   │   ├── host_vars/
+│   │   ├── roles/
+│   │   │   ├── ubuntu-quenne-node/
+│   │   │   ├── ubuntu-quenne-control-plane/
+│   │   │   └── ubuntu-quenne-edge/
+│   │   └── playbooks/
+│   │       ├── deploy-ubuntu-quenne.yml
+│   │       ├── upgrade-ubuntu-quenne.yml
+│   │       └── backup-ubuntu-quenne.yml
+│   ├── kubernetes/
+│   │   ├── crds/
+│   │   ├── operators/
+│   │   ├── manifests/
+│   │   └── helm/
+│   ├── docker/
+│   │   ├── Dockerfile.control-plane
+│   │   ├── Dockerfile.edge
+│   │   └── Dockerfile.device
+│   ├── snap/
+│   │   ├── snapcraft.yaml
+│   │   ├── hooks/
+│   │   │   ├── install
+│   │   │   ├── configure
+│   │   │   └── refresh
+│   │   ├── gui/
+│   │   └── launchers/
+│   ├── juju/
+│   │   ├── charm/
+│   │   │   ├── metadata.yaml
+│   │   │   ├── config.yaml
+│   │   │   ├── actions.yaml
+│   │   │   └── src/
+│   │   └── bundles/
+│   ├── maas/
+│   │   ├── commissioning-scripts/
+│   │   └── deployment-scripts/
+│   ├── cloud-init/
+│   │   ├── ubuntu-quenne-cloud-config.yaml
+│   │   └── user-data/
+│   └── terraform/
+│       ├── aws/
+│       ├── azure/
+│       └── gcp/
+└── examples/
+    ├── intents/
+    ├── policies/
+    ├── workflows/
+    └── use-cases/
+        ├── microk8s-cognitive/
+        ├── maas-bare-metal/
+        ├── ubuntu-core-iot/
+        └── multi-cloud/
+```
+
+Now let's create the key Ubuntu-specific files:
+
+```yaml
+# File: snapcraft.yaml
+name: ubuntu-quenne
+base: core22
+version: '1.0.0'
+summary: Cognitive Infrastructure Stack for Ubuntu
+description: |
+  AI-driven intent-based infrastructure management optimized for Ubuntu.
+  Features Triad AI control plane, cognitive kernel extensions, and
+  unified cloud-edge-device fabric with Ubuntu Pro security integration.
+
+grade: stable
+confinement: strict
+
+architectures:
+  - build-on: [amd64, arm64]
+    run-on: [amd64, arm64]
+
+apps:
+  quenne:
+    command: bin/quenne
+    plugs:
+      - kernel-module-load
+      - hardware-observe
+      - network-observe
+      - network-control
+      - system-observe
+      - process-control
+      - raw-usb
+      - bluez
+      - network-bind
+    daemon: simple
+    restart-condition: on-failure
+    
+  quenne-cli:
+    command: bin/quenne-cli
+    plugs:
+      - network
+      - network-bind
+      - home
+      
+  michael:
+    command: bin/quenne-michael
+    plugs:
+      - network
+      - network-bind
+    daemon: simple
+    
+  gabriel:
+    command: bin/quenne-gabriel
+    plugs:
+      - network
+      - network-bind
+    daemon: simple
+    
+  raphael:
+    command: bin/quenne-raphael
+    plugs:
+      - network
+      - network-bind
+    daemon: simple
+
+slots:
+  quenne-api:
+    interface: content
+    content: quenne-api
+    read:
+      - $SNAP_DATA/api
+
+parts:
+  ubuntu-quenne:
+    plugin: python
+    source: .
+    python-packages:
+      - torch
+      - scikit-learn
+      - xgboost
+      - onnx
+      - onnxruntime
+      - bcc
+      - pyroute2
+    stage-packages:
+      - linux-tools-generic
+      - linux-headers-generic
+      - bpftool
+      - clang
+      - llvm
+      - libbpf-dev
+      - libelf-dev
+      - zlib1g-dev
+    override-build: |
+      set -e
+      craftctl default
+      # Install kernel modules
+      make -C kernel/modules KERNELDIR=/usr/src/linux-headers-$(uname -r)
+      install -D -m 644 kernel/modules/*.ko $SNAPCRAFT_PART_INSTALL/lib/modules/
+      # Install eBPF programs
+      install -D -m 755 ebpf/programs/*.o $SNAPCRAFT_PART_INSTALL/etc/quenne/ebpf/
+      # Install configuration
+      install -D -m 644 configs/*.yaml $SNAPCRAFT_PART_INSTALL/etc/quenne/
+      # Install cloud-init templates
+      install -D -m 644 deployment/cloud-init/*.yaml $SNAPCRAFT_PART_INSTALL/etc/cloud/cloud.cfg.d/
+    build-snaps:
+      - lxd
+    build-packages:
+      - gcc
+      - make
+      - libssl-dev
+      - libffi-dev
+  
+  kernel-modules:
+    plugin: kernel
+    kdefconfig: [ubuntu-quenne.config]
+    kernel-image-target: bzImage
+    build-packages:
+      - flex
+      - bison
+      - libssl-dev
+      - libelf-dev
+
+hooks:
+  install:
+    plugs: [network]
+  configure:
+    plugs: [network]
+  refresh:
+    plugs: [network]
+
+layout:
+  /usr/lib/modules:
+    bind: $SNAP/lib/modules
+  /etc/quenne:
+    bind: $SNAP_DATA/config
+  /var/lib/quenne:
+    bind: $SNAP_DATA/data
+  /var/log/quenne:
+    bind: $SNAP_COMMON/logs
+```
+
+```yaml
+# File: charmcraft.yaml
+type: charm
+name: ubuntu-quenne
+summary: Cognitive Infrastructure Stack for Ubuntu
+description: |
+  AI-driven intent-based infrastructure management optimized for Ubuntu.
+  Juju charm for deploying Ubuntu-QUENNE in model-driven operations.
+
+base: ubuntu@22.04
+series:
+  - jammy
+  - focal
+  - noble
+
+parts:
+  charm:
+    plugin: python
+    source: .
+    build-packages:
+      - gcc
+      - python3-dev
+      - libffi-dev
+      - libssl-dev
+    python-packages:
+      - ops
+      - pyyaml
+      - jinja2
+    override-build: |
+      craftctl default
+      # Install charm files
+      cp -r juju/charm/* ${CRAFT_PART_INSTALL}
+      # Make executable
+      chmod +x ${CRAFT_PART_INSTALL}/src/charm.py
+    prime:
+      - lib
+      - bin
+      - src
+      - hooks
+      - actions
+      - metadata.yaml
+      - config.yaml
+      - actions.yaml
+
+bundle:
+  applications:
+    ubuntu-quenne:
+      charm: ./ubuntu-quenne.charm
+      num_units: 3
+      options:
+        channel: edge
+        enable-ubuntu-pro: true
+        intent-repository: ""
+      to:
+        - lxd:0
+        - lxd:1
+        - lxd:2
+    prometheus:
+      charm: prometheus
+      channel: latest/stable
+    grafana:
+      charm: grafana
+      channel: latest/stable
+  relations:
+    - - ubuntu-quenne:monitoring
+      - prometheus:target
+    - - grafana:grafana-source
+      - prometheus:grafana-source
+```
+
+```bash
+#!/bin/bash
+# File: src/scripts/ubuntu-pro-setup.sh
+#!/bin/bash
+set -e
+
+# Ubuntu-QUENNE Ubuntu Pro Security Setup Script
+# =============================================
+
+COLOR_RESET="\033[0m"
+COLOR_GREEN="\033[32m"
+COLOR_YELLOW="\033[33m"
+COLOR_RED="\033[31m"
+COLOR_BLUE="\033[34m"
+
+log_info() {
+    echo -e "${COLOR_BLUE}[INFO]${COLOR_RESET} $1"
+}
+
+log_success() {
+    echo -e "${COLOR_GREEN}[SUCCESS]${COLOR_RESET} $1"
+}
+
+log_warning() {
+    echo -e "${COLOR_YELLOW}[WARNING]${COLOR_RESET} $1"
+}
+
+log_error() {
+    echo -e "${COLOR_RED}[ERROR]${COLOR_RESET} $1"
+}
+
+check_ubuntu_pro() {
+    log_info "Checking Ubuntu Pro status..."
+    
+    if command -v pro &> /dev/null; then
+        PRO_STATUS=$(pro status --format json)
+        if echo "$PRO_STATUS" | grep -q '"attached": true'; then
+            log_success "Ubuntu Pro is attached"
+            return 0
+        else
+            log_warning "Ubuntu Pro is not attached"
+            return 1
+        fi
+    else
+        log_error "Ubuntu Pro client not installed"
+        return 2
+    fi
+}
+
+install_ubuntu_pro_client() {
+    log_info "Installing Ubuntu Pro client..."
+    
+    sudo apt update
+    sudo apt install -y ubuntu-advantage-tools
+    
+    if [ $? -eq 0 ]; then
+        log_success "Ubuntu Pro client installed successfully"
+    else
+        log_error "Failed to install Ubuntu Pro client"
+        exit 1
+    fi
+}
+
+attach_ubuntu_pro() {
+    local token=$1
+    
+    if [ -z "$token" ]; then
+        log_warning "No Ubuntu Pro token provided"
+        log_info "Please attach manually: sudo pro attach <TOKEN>"
+        return 1
+    fi
+    
+    log_info "Attaching Ubuntu Pro with provided token..."
+    sudo pro attach "$token"
+    
+    if [ $? -eq 0 ]; then
+        log_success "Ubuntu Pro attached successfully"
+        return 0
+    else
+        log_error "Failed to attach Ubuntu Pro"
+        return 1
+    fi
+}
+
+enable_security_services() {
+    log_info "Enabling Ubuntu Pro security services..."
+    
+    local services=(
+        "livepatch"     # Live kernel patching
+        "fips"          # FIPS 140-2 cryptographic modules
+        "cis"           # CIS benchmark compliance
+        "esm-infra"     # Extended Security Maintenance
+        "esm-apps"      # ESM for applications
+    )
+    
+    for service in "${services[@]}"; do
+        log_info "Enabling $service..."
+        
+        if sudo pro enable "$service" --assume-yes; then
+            log_success "Enabled $service"
+        else
+            log_warning "Failed to enable $service"
+        fi
+    done
+}
+
+setup_livepatch() {
+    log_info "Setting up Livepatch..."
+    
+    # Check if livepatch is installed
+    if ! command -v canonical-livepatch &> /dev/null; then
+        sudo apt install -y canonical-livepatch
+    fi
+    
+    # Enable livepatch
+    if sudo canonical-livepatch enable; then
+        log_success "Livepatch enabled"
+        
+        # Check status
+        sudo canonical-livepatch status
+    else
+        log_error "Failed to enable Livepatch"
+    fi
+}
+
+configure_fips() {
+    log_info "Configuring FIPS 140-2..."
+    
+    # Check if FIPS is enabled
+    if pro status --format json | grep -q '"fips": {"entitled": "yes"'; then
+        log_info "Installing FIPS kernel..."
+        
+        # Install FIPS kernel
+        sudo apt update
+        sudo apt install -y linux-image-generic-fips
+        
+        # Reboot required for FIPS
+        log_warning "FIPS requires reboot to take effect"
+        log_info "You should reboot the system after setup"
+    else
+        log_warning "FIPS not entitled or enabled"
+    fi
+}
+
+setup_cis_compliance() {
+    log_info "Setting up CIS compliance..."
+    
+    # Install CIS benchmark tools
+    sudo apt install -y \
+        auditd \
+        aide \
+        libpam-pwquality \
+        libpam-apparmor
+    
+    # Generate initial CIS report
+    log_info "Generating CIS compliance report..."
+    
+    # Create compliance directory
+    sudo mkdir -p /etc/quenne/compliance/cis
+    
+    # Basic CIS checks
+    cat > /tmp/cis_checks.sh << 'EOF'
+#!/bin/bash
+echo "=== CIS Compliance Checks ==="
+echo "Timestamp: $(date)"
+echo ""
+
+# Check 1: Password policies
+echo "1. Password Policies:"
+grep -E "^PASS_MAX_DAYS" /etc/login.defs
+grep -E "^PASS_MIN_DAYS" /etc/login.defs
+grep -E "^PASS_WARN_AGE" /etc/login.defs
+echo ""
+
+# Check 2: SSH configuration
+echo "2. SSH Configuration:"
+grep -E "^PermitRootLogin" /etc/ssh/sshd_config || echo "PermitRootLogin not configured"
+grep -E "^Protocol" /etc/ssh/sshd_config || echo "Protocol not configured"
+echo ""
+
+# Check 3: Audit configuration
+echo "3. Audit Configuration:"
+systemctl is-active auditd
+echo ""
+
+# Check 4: Firewall status
+echo "4. Firewall Status:"
+if command -v ufw &> /dev/null; then
+    ufw status
+elif command -v firewall-cmd &> /dev/null; then
+    firewall-cmd --state
+fi
+echo ""
+EOF
+    
+    chmod +x /tmp/cis_checks.sh
+    sudo /tmp/cis_checks.sh | sudo tee /etc/quenne/compliance/cis/initial_report.txt
+    
+    log_success "CIS compliance setup completed"
+}
+
+configure_esm() {
+    log_info "Configuring Extended Security Maintenance..."
+    
+    # Update apt sources to include ESM
+    sudo pro enable esm-infra --assume-yes
+    sudo pro enable esm-apps --assume-yes
+    
+    # Update package lists
+    sudo apt update
+    
+    # Check ESM status
+    sudo apt policy | grep -i esm
+    
+    log_success "ESM configured"
+}
+
+setup_automatic_updates() {
+    log_info "Setting up automatic security updates..."
+    
+    # Install unattended-upgrades
+    sudo apt install -y unattended-upgrades
+    
+    # Configure automatic updates
+    cat > /tmp/50quenne-updates << 'EOF'
+# Ubuntu-QUENNE Automatic Update Configuration
+APT::Periodic::Update-Package-Lists "1";
+APT::Periodic::Download-Upgradeable-Packages "1";
+APT::Periodic::AutocleanInterval "7";
+APT::Periodic::Unattended-Upgrade "1";
+
+# Only install security updates
+Unattended-Upgrade::Allowed-Origins {
+    "${distro_id}:${distro_codename}-security";
+    "${distro_id}ESMApps:${distro_codename}-apps-security";
+    "${distro_id}ESM:${distro_codename}-infra-security";
+};
+
+# Auto-reboot for kernel updates
+Unattended-Upgrade::Automatic-Reboot "true";
+Unattended-Upgrade::Automatic-Reboot-Time "04:00";
+
+# Send email notifications
+Unattended-Upgrade::Mail "root";
+Unattended-Upgrade::MailOnlyOnError "true";
+EOF
+    
+    sudo mv /tmp/50quenne-updates /etc/apt/apt.conf.d/50quenne-updates
+    
+    # Enable the service
+    sudo systemctl enable unattended-upgrades
+    sudo systemctl start unattended-upgrades
+    
+    log_success "Automatic updates configured"
+}
+
+enable_apparmor() {
+    log_info "Enhancing AppArmor for QUENNE..."
+    
+    # Ensure AppArmor is running
+    sudo systemctl enable apparmor
+    sudo systemctl start apparmor
+    
+    # Create AppArmor profiles for QUENNE components
+    cat > /tmp/usr.bin.quenne << 'EOF'
+#include <tunables/global>
+
+/usr/bin/quenne {
+  #include <abstractions/base>
+  #include <abstractions/consoles>
+  #include <abstractions/nameservice>
+  
+  # Read access
+  /etc/quenne/** r,
+  /var/lib/quenne/** r,
+  /var/log/quenne/** r,
+  
+  # Write access
+  /var/lib/quenne/** w,
+  /var/log/quenne/** w,
+  
+  # Kernel module loading
+  capability sys_module,
+  
+  # Network access
+  network inet stream,
+  network inet6 stream,
+  
+  # BPF access
+  capability sys_admin,
+  capability net_admin,
+  
+  # IPC
+  ipc send receive,
+}
+EOF
+    
+    sudo mv /tmp/usr.bin.quenne /etc/apparmor.d/usr.bin.quenne
+    sudo apparmor_parser -r /etc/apparmor.d/usr.bin.quenne
+    
+    log_success "AppArmor profiles configured"
+}
+
+setup_audit_logging() {
+    log_info "Setting up enhanced audit logging..."
+    
+    # Install audit tools
+    sudo apt install -y auditd audispd-plugins
+    
+    # Configure audit rules for QUENNE
+    cat > /tmp/quenne-audit.rules << 'EOF'
+# Ubuntu-QUENNE Audit Rules
+# Monitor QUENNE configuration changes
+-w /etc/quenne -p wa -k quenne_config
+-w /etc/quenne/intents -p wa -k quenne_intent
+-w /etc/quenne/policies -p wa -k quenne_policy
+
+# Monitor QUENNE data directories
+-w /var/lib/quenne -p wa -k quenne_data
+-w /var/log/quenne -p wa -k quenne_logs
+
+# Monitor eBPF operations
+-a always,exit -F arch=b64 -S bpf -k quenne_ebpf
+
+# Monitor kernel module operations
+-w /sbin/insmod -p x -k kernel_module
+-w /sbin/rmmod -p x -k kernel_module
+-w /sbin/modprobe -p x -k kernel_module
+
+# Monitor privilege escalation
+-a always,exit -F arch=b64 -S execve -C uid!=euid -F euid=0 -k privilege_escalation
+-a always,exit -F arch=b64 -S execve -C gid!=egid -F egid=0 -k privilege_escalation
+EOF
+    
+    sudo mv /tmp/quenne-audit.rules /etc/audit/rules.d/quenne.rules
+    
+    # Restart audit service
+    sudo systemctl restart auditd
+    
+    log_success "Audit logging configured"
+}
+
+configure_network_security() {
+    log_info "Configuring network security..."
+    
+    # Enable UFW if not enabled
+    if ! sudo ufw status | grep -q "Status: active"; then
+        sudo ufw --force enable
+    fi
+    
+    # Allow QUENNE ports
+    sudo ufw allow 8080/tcp comment "QUENNE API"
+    sudo ufw allow 8081/tcp comment "Michael API"
+    sudo ufw allow 8082/tcp comment "Gabriel API"
+    sudo ufw allow 8083/tcp comment "Raphael API"
+    sudo ufw allow 5000/tcp comment "Consensus RPC"
+    
+    # Default deny policy
+    sudo ufw default deny incoming
+    sudo ufw default allow outgoing
+    
+    log_success "Network security configured"
+}
+
+generate_security_report() {
+    log_info "Generating security assessment report..."
+    
+    local report_file="/etc/quenne/security/assessment_$(date +%Y%m%d_%H%M%S).json"
+    sudo mkdir -p /etc/quenne/security
+    
+    # Collect security data
+    cat > /tmp/security_assessment.py << 'EOF'
+#!/usr/bin/env python3
+import json
+import subprocess
+import socket
+import datetime
+import os
+
+def run_command(cmd):
+    try:
+        result = subprocess.run(cmd, shell=True, capture_output=True, text=True)
+        return result.returncode, result.stdout, result.stderr
+    except Exception as e:
+        return 1, "", str(e)
+
+def get_system_info():
+    info = {}
+    
+    # OS info
+    with open('/etc/os-release', 'r') as f:
+        for line in f:
+            if '=' in line:
+                key, value = line.strip().split('=', 1)
+                info[key.lower()] = value.strip('"')
+    
+    # Kernel
+    _, stdout, _ = run_command('uname -r')
+    info['kernel'] = stdout.strip()
+    
+    return info
+
+def check_ubuntu_pro():
+    pro_info = {}
+    
+    # Check if pro command exists
+    rc, stdout, _ = run_command('command -v pro')
+    if rc != 0:
+        pro_info['installed'] = False
+        return pro_info
+    
+    pro_info['installed'] = True
+    
+    # Get pro status
+    rc, stdout, _ = run_command('pro status --format json')
+    if rc == 0:
+        try:
+            pro_info['status'] = json.loads(stdout)
+        except:
+            pro_info['status'] = stdout
+    
+    return pro_info
+
+def check_security_services():
+    services = {}
+    
+    service_checks = {
+        'apparmor': 'systemctl is-active apparmor',
+        'auditd': 'systemctl is-active auditd',
+        'ufw': 'systemctl is-active ufw',
+        'livepatch': 'canonical-livepatch status',
+        'unattended-upgrades': 'systemctl is-active unattended-upgrades',
+    }
+    
+    for service, cmd in service_checks.items():
+        rc, stdout, _ = run_command(cmd)
+        services[service] = rc == 0
+    
+    return services
+
+def check_open_ports():
+    ports = []
+    
+    # Check listening ports
+    rc, stdout, _ = run_command('ss -tulpn')
+    if rc == 0:
+        for line in stdout.split('\n')[1:]:
+            if line:
+                parts = line.split()
+                if len(parts) >= 5:
+                    ports.append({
+                        'protocol': parts[0],
+                        'local_address': parts[4],
+                        'process': parts[6] if len(parts) > 6 else ''
+                    })
+    
+    return ports
+
+def main():
+    assessment = {
+        'timestamp': datetime.datetime.now().isoformat(),
+        'hostname': socket.gethostname(),
+        'system': get_system_info(),
+        'ubuntu_pro': check_ubuntu_pro(),
+        'security_services': check_security_services(),
+        'open_ports': check_open_ports(),
+        'recommendations': []
+    }
+    
+    # Generate recommendations
+    if not assessment['ubuntu_pro'].get('installed'):
+        assessment['recommendations'].append('Install Ubuntu Pro client')
+    
+    if not assessment['security_services'].get('apparmor'):
+        assessment['recommendations'].append('Enable and start AppArmor')
+    
+    if not assessment['security_services'].get('ufw'):
+        assessment['recommendations'].append('Enable UFW firewall')
+    
+    return assessment
+
+if __name__ == '__main__':
+    assessment = main()
+    print(json.dumps(assessment, indent=2))
+EOF
+    
+    python3 /tmp/security_assessment.py | sudo tee "$report_file"
+    
+    log_success "Security assessment report generated: $report_file"
+}
+
+setup_quenne_security() {
+    log_info "Setting up QUENNE-specific security..."
+    
+    # Create QUENNE security directory
+    sudo mkdir -p /etc/quenne/security/policies
+    
+    # Generate QUENNE security policy
+    cat > /tmp/quenne-security-policy.yaml << 'EOF'
+# Ubuntu-QUENNE Security Policy
+version: "1.0"
+effective_date: "$(date +%Y-%m-%d)"
+
+policy:
+  authentication:
+    require_mfa: true
+    session_timeout: 3600
+    max_failed_attempts: 3
+    lockout_duration: 900
+  
+  authorization:
+    default_policy: "deny"
+    role_based_access: true
+    least_privilege: true
+  
+  encryption:
+    data_at_rest: "AES-256-GCM"
+    data_in_transit: "TLS 1.3"
+    key_rotation_days: 90
+  
+  network:
+    default_deny: true
+    allow_local_only: false
+    require_vpn_for_admin: true
+  
+  auditing:
+    enable_audit_trail: true
+    retention_days: 365
+    real_time_alerting: true
+  
+  compliance:
+    frameworks:
+      - "cis-ubuntu-linux-20.04"
+      - "nist-800-53"
+      - "gdpr"
+      - "hipaa"
+    auto_remediate: true
+    reporting_frequency: "daily"
+  
+  incident_response:
+    auto_containment: true
+    forensic_preservation: true
+    notification_channels:
+      - "email:security-team@example.com"
+      - "slack:#security-alerts"
+  
+  backup:
+    enabled: true
+    frequency: "daily"
+    encryption: true
+    retention_days: 30
+  
+  update_policy:
+    security_updates: "immediate"
+    feature_updates: "scheduled"
+    maintenance_window: "Sunday 02:00-04:00 UTC"
+EOF
+    
+    sudo mv /tmp/quenne-security-policy.yaml /etc/quenne/security/policies/base.yaml
+    
+    # Set permissions
+    sudo chmod 600 /etc/quenne/security/policies/base.yaml
+    sudo chown -R quenne:quenne /etc/quenne/security
+    
+    log_success "QUENNE security policy configured"
+}
+
+main() {
+    log_info "Starting Ubuntu-QUENNE Security Setup"
+    log_info "======================================"
+    
+    # Check if running as root
+    if [ "$EUID" -ne 0 ]; then
+        log_error "Please run as root or with sudo"
+        exit 1
+    fi
+    
+    # Step 1: Check Ubuntu Pro
+    if ! check_ubuntu_pro; then
+        log_warning "Ubuntu Pro is not attached"
+        read -p "Do you have an Ubuntu Pro token? (y/n): " -n 1 -r
+        echo
+        if [[ $REPLY =~ ^[Yy]$ ]]; then
+            read -p "Enter Ubuntu Pro token: " pro_token
+            attach_ubuntu_pro "$pro_token"
+        else
+            log_info "Skipping Ubuntu Pro attachment"
+            log_info "You can attach later with: sudo pro attach <TOKEN>"
+        fi
+    fi
+    
+    # Step 2: Install Ubuntu Pro client if needed
+    if ! command -v pro &> /dev/null; then
+        install_ubuntu_pro_client
+    fi
+    
+    # Step 3: Enable security services
+    enable_security_services
+    
+    # Step 4: Setup Livepatch
+    setup_livepatch
+    
+    # Step 5: Configure FIPS (if entitled)
+    configure_fips
+    
+    # Step 6: Setup CIS compliance
+    setup_cis_compliance
+    
+    # Step 7: Configure ESM
+    configure_esm
+    
+    # Step 8: Setup automatic updates
+    setup_automatic_updates
+    
+    # Step 9: Enhance AppArmor
+    enable_apparmor
+    
+    # Step 10: Setup audit logging
+    setup_audit_logging
+    
+    # Step 11: Configure network security
+    configure_network_security
+    
+    # Step 12: Setup QUENNE-specific security
+    setup_quenne_security
+    
+    # Step 13: Generate security report
+    generate_security_report
+    
+    log_info "======================================"
+    log_success "Ubuntu-QUENNE Security Setup Complete!"
+    
+    # Summary
+    echo ""
+    echo "Summary of enabled features:"
+    echo "1. Ubuntu Pro services enabled"
+    echo "2. Livepatch configured"
+    echo "3. CIS compliance auditing"
+    echo "4. ESM for extended security"
+    echo "5. Automatic security updates"
+    echo "6. AppArmor profiles"
+    echo "7. Enhanced audit logging"
+    echo "8. Network firewall (UFW)"
+    echo "9. QUENNE security policies"
+    echo ""
+    echo "Next steps:"
+    echo "1. Review security report in /etc/quenne/security/"
+    echo "2. Reboot system for FIPS to take effect"
+    echo "3. Test security configuration"
+    echo ""
+}
+
+# Run main function
+main "$@"
+```
+
+```python
+#!/usr/bin/env python3
+# File: src/quenne/utils/ubuntu/snap.py
+"""
+Ubuntu Snap integration for Ubuntu-QUENNE.
+"""
+
+import os
+import json
+import subprocess
+import yaml
+from pathlib import Path
+from typing import Dict, List, Optional, Any
+import logging
+
+logger = logging.getLogger(__name__)
+
+class SnapManager:
+    """Manage Ubuntu Snap integration for QUENNE."""
+    
+    def __init__(self, snap_name: str = "ubuntu-quenne"):
+        self.snap_name = snap_name
+        self.snap_data = Path(f"/var/snap/{snap_name}/current")
+        self.snap_common = Path(f"/var/snap/{snap_name}/common")
+        
+    def is_snap(self) -> bool:
+        """Check if running as a snap."""
+        return "SNAP" in os.environ
+    
+    def get_snap_info(self) -> Dict[str, Any]:
+        """Get snap information."""
+        try:
+            result = subprocess.run(
+                ["snap", "info", self.snap_name],
+                capture_output=True,
+                text=True,
+                check=True
+            )
+            
+            info = {}
+            for line in result.stdout.split("\n"):
+                if ":" in line:
+                    key, value = line.split(":", 1)
+                    info[key.strip()] = value.strip()
+            
+            return info
+        except subprocess.CalledProcessError as e:
+            logger.error(f"Failed to get snap info: {e}")
+            return {}
+    
+    def get_snap_config(self) -> Dict[str, Any]:
+        """Get snap configuration."""
+        try:
+            result = subprocess.run(
+                ["snap", "get", self.snap_name],
+                capture_output=True,
+                text=True,
+                check=True
+            )
+            
+            config = {}
+            for line in result.stdout.split("\n"):
+                if "=" in line:
+                    key, value = line.split("=", 1)
+                    config[key.strip()] = value.strip()
+            
+            return config
+        except subprocess.CalledProcessError as e:
+            logger.error(f"Failed to get snap config: {e}")
+            return {}
+    
+    def set_snap_config(self, config: Dict[str, str]) -> bool:
+        """Set snap configuration."""
+        try:
+            for key, value in config.items():
+                subprocess.run(
+                    ["snap", "set", self.snap_name, f"{key}={value}"],
+                    capture_output=True,
+                    text=True,
+                    check=True
+                )
+            return True
+        except subprocess.CalledProcessError as e:
+            logger.error(f"Failed to set snap config: {e}")
+            return False
+    
+    def connect_interfaces(self, interfaces: List[str]) -> bool:
+        """Connect snap interfaces."""
+        try:
+            for interface in interfaces:
+                subprocess.run(
+                    ["snap", "connect", f"{self.snap_name}:{interface}"],
+                    capture_output=True,
+                    text=True,
+                    check=True
+                )
+            return True
+        except subprocess.CalledProcessError as e:
+            logger.error(f"Failed to connect interfaces: {e}")
+            return False
+    
+    def install_snap(self, channel: str = "edge") -> bool:
+        """Install the snap package."""
+        try:
+            subprocess.run(
+                ["snap", "install", self.snap_name, f"--channel={channel}"],
+                capture_output=True,
+                text=True,
+                check=True
+            )
+            return True
+        except subprocess.CalledProcessError as e:
+            logger.error(f"Failed to install snap: {e}")
+            return False
+    
+    def refresh_snap(self, channel: str = "edge") -> bool:
+        """Refresh the snap package."""
+        try:
+            subprocess.run(
+                ["snap", "refresh", self.snap_name, f"--channel={channel}"],
+                capture_output=True,
+                text=True,
+                check=True
+            )
+            return True
+        except subprocess.CalledProcessError as e:
+            logger.error(f"Failed to refresh snap: {e}")
+            return False
+    
+    def setup_snap_environment(self) -> Dict[str, Any]:
+        """Setup snap environment for QUENNE."""
+        if not self.is_snap():
+            logger.warning("Not running as snap, skipping snap setup")
+            return {}
+        
+        # Create necessary directories
+        directories = [
+            self.snap_data / "config",
+            self.snap_data / "intents",
+            self.snap_data / "policies",
+            self.snap_common / "logs",
+            self.snap_common / "data",
+            self.snap_common / "cache",
+        ]
+        
+        for directory in directories:
+            directory.mkdir(parents=True, exist_ok=True)
+        
+        # Copy configuration if it doesn't exist
+        config_source = Path("/snap/ubuntu-quenne/current/etc/quenne")
+        if config_source.exists():
+            import shutil
+            config_dest = self.snap_data / "config"
+            
+            if not (config_dest / "quenne.yaml").exists():
+                shutil.copytree(config_source, config_dest, dirs_exist_ok=True)
+        
+        # Connect required interfaces
+        required_interfaces = [
+            "kernel-module-load",
+            "hardware-observe",
+            "network-observe",
+            "network-control",
+            "system-observe",
+        ]
+        
+        connected = self.connect_interfaces(required_interfaces)
+        
+        # Set default configuration
+        default_config = {
+            "log-level": "INFO",
+            "data-dir": str(self.snap_common / "data"),
+            "config-dir": str(self.snap_data / "config"),
+            "intent-repository": str(self.snap_data / "intents"),
+        }
+        
+        self.set_snap_config(default_config)
+        
+        return {
+            "snap_name": self.snap_name,
+            "snap_data": str(self.snap_data),
+            "snap_common": str(self.snap_common),
+            "interfaces_connected": connected,
+            "config_set": True,
+        }
+    
+    def create_snap_service(self, service_name: str, **kwargs) -> bool:
+        """Create a snap service configuration."""
+        service_dir = Path(f"/etc/systemd/system/snap.{self.snap_name}.{service_name}.service.d")
+        service_dir.mkdir(parents=True, exist_ok=True)
+        
+        # Create service override
+        override_config = {
+            "Service": {
+                "Environment": f"SNAP_DATA={self.snap_data}",
+                "Environment": f"SNAP_COMMON={self.snap_common}",
+                "WorkingDirectory": str(self.snap_common),
+            }
+        }
+        
+        # Add custom configurations
+        for key, value in kwargs.items():
+            if key in ["Environment", "ExecStart", "User", "Group"]:
+                override_config["Service"][key] = value
+        
+        override_file = service_dir / "override.conf"
+        with open(override_file, "w") as f:
+            for section, options in override_config.items():
+                f.write(f"[{section}]\n")
+                for key, value in options.items():
+                    f.write(f"{key}={value}\n")
+                f.write("\n")
+        
+        # Reload systemd
+        subprocess.run(["systemctl", "daemon-reload"], check=False)
+        
+        return True
+    
+    def setup_snap_hooks(self) -> Dict[str, Any]:
+        """Setup snap hooks for lifecycle events."""
+        hooks_dir = Path(f"/snap/{self.snap_name}/current/hooks")
+        
+        if not hooks_dir.exists():
+            return {"status": "no_hooks_dir"}
+        
+        # List available hooks
+        hooks = {}
+        for hook_file in hooks_dir.glob("*"):
+            if hook_file.is_file() and os.access(hook_file, os.X_OK):
+                hooks[hook_file.name] = str(hook_file)
+        
+        # Create symlinks for automatic execution
+        systemd_hooks_dir = Path("/etc/systemd/system/snap-hooks.target.wants")
+        systemd_hooks_dir.mkdir(parents=True, exist_ok=True)
+        
+        for hook_name, hook_path in hooks.items():
+            service_name = f"snap.{self.snap_name}.hook.{hook_name}.service"
+            service_file = Path(f"/etc/systemd/system/{service_name}")
+            
+            # Create service file for hook
+            service_content = f"""[Unit]
+Description=Snap Hook: {hook_name} for {self.snap_name}
+After=snapd.service
+Requires=snapd.service
+
+[Service]
+Type=oneshot
+ExecStart={hook_path}
+RemainAfterExit=yes
+
+[Install]
+WantedBy=snap-hooks.target
+"""
+            
+            with open(service_file, "w") as f:
+                f.write(service_content)
+            
+            # Enable the service
+            subprocess.run(
+                ["systemctl", "enable", service_name],
+                capture_output=True,
+                check=False
+            )
+        
+        return {
+            "hooks_found": list(hooks.keys()),
+            "services_created": len(hooks),
+        }
+    
+    def generate_snap_manifest(self) -> Dict[str, Any]:
+        """Generate snap manifest for documentation."""
+        manifest = {
+            "snap": {
+                "name": self.snap_name,
+                "version": self.get_snap_info().get("version", "unknown"),
+                "confinement": "strict",
+                "base": "core22",
+            },
+            "apps": {
+                "quenne": {
+                    "command": "bin/quenne",
+                    "daemon": "simple",
+                    "plugs": [
+                        "kernel-module-load",
+                        "hardware-observe",
+                        "network-observe",
+                        "network-control",
+                        "system-observe",
+                    ],
+                },
+                "quenne-cli": {
+                    "command": "bin/quenne-cli",
+                    "plugs": ["network", "network-bind"],
+                },
+            },
+            "environment": {
+                "SNAP_DATA": str(self.snap_data),
+                "SNAP_COMMON": str(self.snap_common),
+                "SNAP_NAME": self.snap_name,
+                "PATH": "$SNAP/usr/sbin:$SNAP/usr/bin:$SNAP/sbin:$SNAP/bin:$PATH",
+                "LD_LIBRARY_PATH": "$SNAP_LIBRARY_PATH:$LD_LIBRARY_PATH",
+            },
+            "config": self.get_snap_config(),
+            "interfaces": {
+                "connected": self._get_connected_interfaces(),
+                "available": self._get_available_interfaces(),
+            },
+        }
+        
+        return manifest
+    
+    def _get_connected_interfaces(self) -> List[str]:
+        """Get list of connected interfaces."""
+        try:
+            result = subprocess.run(
+                ["snap", "connections", self.snap_name],
+                capture_output=True,
+                text=True,
+                check=True
+            )
+            
+            connected = []
+            for line in result.stdout.split("\n"):
+                if "connected" in line and self.snap_name in line:
+                    parts = line.split()
+                    if len(parts) > 1:
+                        interface = parts[1].split(":")[0]
+                        connected.append(interface)
+            
+            return connected
+        except subprocess.CalledProcessError:
+            return []
+    
+    def _get_available_interfaces(self) -> List[str]:
+        """Get list of available interfaces for this snap."""
+        try:
+            result = subprocess.run(
+                ["snap", "interfaces", self.snap_name],
+                capture_output=True,
+                text=True,
+                check=True
+            )
+            
+            interfaces = []
+            for line in result.stdout.split("\n"):
+                if ":" in line and not line.startswith(" "):
+                    interface = line.split(":")[0].strip()
+                    interfaces.append(interface)
+            
+            return interfaces
+        except subprocess.CalledProcessError:
+            return []
+
+
+class SnapSecurity:
+    """Handle snap security features."""
+    
+    def __init__(self, snap_name: str = "ubuntu-quenne"):
+        self.snap_name = snap_name
+    
+    def enable_apparmor(self) -> bool:
+        """Enable AppArmor for snap."""
+        try:
+            # Check if AppArmor is enabled
+            result = subprocess.run(
+                ["aa-status"],
+                capture_output=True,
+                text=True,
+                check=False
+            )
+            
+            if "apparmor module is loaded" not in result.stdout:
+                logger.warning("AppArmor not loaded")
+                return False
+            
+            # Enable AppArmor for snap
+            subprocess.run(
+                ["snap", "set", self.snap_name, "apparmor=enabled"],
+                capture_output=True,
+                text=True,
+                check=True
+            )
+            
+            return True
+        except subprocess.CalledProcessError as e:
+            logger.error(f"Failed to enable AppArmor: {e}")
+            return False
+    
+    def setup_seccomp(self) -> bool:
+        """Setup seccomp filters for snap."""
+        try:
+            # Generate seccomp profile
+            seccomp_profile = f"""
+# Seccomp profile for {self.snap_name}
+# Default policy: allow
+default_action: allow
+syscalls:
+  - name: ptrace
+    action: errno
+  - name: kexec_load
+    action: errno
+  - name: bpf
+    action: errno
+  - name: perf_event_open
+    action: errno
+architectures:
+  - SCMP_ARCH_X86_64
+  - SCMP_ARCH_AARCH64
+"""
+            
+            profile_path = Path(f"/var/lib/snapd/seccomp/bpf/{self.snap_name}.src")
+            profile_path.parent.mkdir(parents=True, exist_ok=True)
+            
+            with open(profile_path, "w") as f:
+                f.write(seccomp_profile)
+            
+            # Compile seccomp profile
+            subprocess.run(
+                ["snap-seccomp", "compile", str(profile_path)],
+                capture_output=True,
+                text=True,
+                check=True
+            )
+            
+            return True
+        except subprocess.CalledProcessError as e:
+            logger.error(f"Failed to setup seccomp: {e}")
+            return False
+    
+    def enable_content_interface(self, content_snap: str, interface: str) -> bool:
+        """Enable content interface between snaps."""
+        try:
+            subprocess.run(
+                ["snap", "connect", f"{self.snap_name}:{interface}", f"{content_snap}:{interface}"],
+                capture_output=True,
+                text=True,
+                check=True
+            )
+            return True
+        except subprocess.CalledProcessError as e:
+            logger.error(f"Failed to connect content interface: {e}")
+            return False
+    
+    def create_sandbox(self, sandbox_name: str) -> Dict[str, Any]:
+        """Create a sandboxed environment for QUENNE components."""
+        sandbox_dir = Path(f"/var/snap/{self.snap_name}/common/sandboxes/{sandbox_name}")
+        sandbox_dir.mkdir(parents=True, exist_ok=True)
+        
+        # Create sandbox directories
+        directories = ["rootfs", "config", "data", "tmp"]
+        for directory in directories:
+            (sandbox_dir / directory).mkdir(exist_ok=True)
+        
+        # Create mount namespace
+        try:
+            subprocess.run(
+                ["unshare", "--mount", "--uts", "--ipc", "--net", "--pid", "--fork", "--mount-proc",
+                 f"{sandbox_dir}/rootfs", "bash", "-c", "mount -t tmpfs tmpfs /tmp"],
+                capture_output=True,
+                text=True,
+                check=True
+            )
+        except subprocess.CalledProcessError as e:
+            logger.warning(f"Failed to create mount namespace: {e}")
+        
+        # Create cgroup for sandbox
+        cgroup_dir = Path(f"/sys/fs/cgroup/system.slice/snap.{self.snap_name}.sandbox-{sandbox_name}")
+        cgroup_dir.mkdir(parents=True, exist_ok=True)
+        
+        # Set resource limits
+        with open(cgroup_dir / "cpu.max", "w") as f:
+            f.write("50000 100000")  # 50% CPU limit
+        
+        with open(cgroup_dir / "memory.max", "w") as f:
+            f.write("1G")  # 1GB memory limit
+        
+        return {
+            "sandbox_name": sandbox_name,
+            "sandbox_dir": str(sandbox_dir),
+            "cgroup_dir": str(cgroup_dir),
+            "status": "created",
+        }
+
+
+def setup_snap_environment() -> Dict[str, Any]:
+    """Setup complete snap environment for Ubuntu-QUENNE."""
+    snap_mgr = SnapManager()
+    
+    if not snap_mgr.is_snap():
+        logger.info("Not running as snap, setting up development environment")
+        return {"mode": "development"}
+    
+    logger.info("Setting up snap environment for Ubuntu-QUENNE")
+    
+    # Setup basic snap environment
+    setup_result = snap_mgr.setup_snap_environment()
+    
+    # Setup security
+    security = SnapSecurity()
+    security.enable_apparmor()
+    security.setup_seccomp()
+    
+    # Setup hooks
+    hooks_result = snap_mgr.setup_snap_hooks()
+    
+    # Create sandbox for Triad AI
+    sandbox_result = security.create_sandbox("triad-ai")
+    
+    # Generate manifest
+    manifest = snap_mgr.generate_snap_manifest()
+    
+    return {
+        "mode": "snap",
+        "setup": setup_result,
+        "hooks": hooks_result,
+        "sandbox": sandbox_result,
+        "manifest": manifest,
+    }
+
+
+if __name__ == "__main__":
+    import sys
+    logging.basicConfig(level=logging.INFO)
+    
+    if len(sys.argv) > 1:
+        if sys.argv[1] == "setup":
+            result = setup_snap_environment()
+            print(json.dumps(result, indent=2))
+        elif sys.argv[1] == "info":
+            snap_mgr = SnapManager()
+            info = snap_mgr.get_snap_info()
+            print(json.dumps(info, indent=2))
+        elif sys.argv[1] == "config":
+            snap_mgr = SnapManager()
+            config = snap_mgr.get_snap_config()
+            print(json.dumps(config, indent=2))
+    else:
+        print("Usage: python snap.py [setup|info|config]")
+```
+
+```python
+#!/usr/bin/env python3
+# File: src/quenne/utils/ubuntu/maas.py
+"""
+MAAS (Metal-as-a-Service) integration for Ubuntu-QUENNE.
+"""
+
+import yaml
+import json
+import subprocess
+import requests
+from typing import Dict, List, Optional, Any
+from dataclasses import dataclass, asdict
+from datetime import datetime
+import logging
+from pathlib import Path
+
+logger = logging.getLogger(__name__)
+
+@dataclass
+class MAASMachine:
+    """MAAS machine representation."""
+    system_id: str
+    hostname: str
+    architecture: str
+    cpu_count: int
+    memory_gb: float
+    storage_gb: float
+    power_state: str
+    status: str
+    tags: List[str]
+    zone: str
+    owner: Optional[str]
+    ip_addresses: List[str]
+
+class MAASClient:
+    """Client for MAAS API."""
+    
+    def __init__(self, maas_url: str, api_key: str):
+        self.maas_url = maas_url.rstrip('/')
+        self.api_key = api_key
+        self.session = requests.Session()
+        self.session.headers.update({
+            'Authorization': f'ApiKey {api_key}',
+            'Content-Type': 'application/json',
+        })
+    
+    def get_machines(self, **filters) -> List[MAASMachine]:
+        """Get list of machines from MAAS."""
+        url = f"{self.maas_url}/api/2.0/machines/"
+        
+        try:
+            response = self.session.get(url, params=filters)
+            response.raise_for_status()
+            
+            machines = []
+            for machine_data in response.json():
+                machine = MAASMachine(
+                    system_id=machine_data['system_id'],
+                    hostname=machine_data['hostname'],
+                    architecture=machine_data['architecture'],
+                    cpu_count=machine_data['cpu_count'],
+                    memory_gb=machine_data['memory'] / 1024,  # Convert MB to GB
+                    storage_gb=sum(
+                        block_device.get('size', 0) 
+                        for block_device in machine_data.get('block_devices', [])
+                    ) / (1024 ** 3),  # Convert bytes to GB
+                    power_state=machine_data['power_state'],
+                    status=machine_data['status_name'],
+                    tags=machine_data.get('tag_names', []),
+                    zone=machine_data['zone']['name'],
+                    owner=machine_data.get('owner', {}).get('username'),
+                    ip_addresses=[
+                        interface['links'][0]['ip_address'] 
+                        for interface in machine_data.get('interface_set', [])
+                        if interface['links']
+                    ],
+                )
+                machines.append(machine)
+            
+            return machines
+        except requests.RequestException as e:
+            logger.error(f"Failed to get machines: {e}")
+            return []
+    
+    def deploy_machine(self, system_id: str, distro_series: str = "jammy",
+                      hwe_kernel: str = "hwe-22.04", user_data: Optional[str] = None) -> bool:
+        """Deploy a machine with Ubuntu-QUENNE."""
+        url = f"{self.maas_url}/api/2.0/machines/{system_id}/"
+        
+        # Get machine details first
+        try:
+            response = self.session.get(url)
+            response.raise_for_status()
+            machine_data = response.json()
+            
+            # Check if machine is available for deployment
+            if machine_data['status_name'] != 'Ready':
+                logger.error(f"Machine {system_id} is not ready for deployment")
+                return False
+            
+            # Prepare deployment data
+            deploy_data = {
+                'distro_series': distro_series,
+                'hwe_kernel': hwe_kernel,
+                'install_rackd': True,
+                'install_kvm': False,
+            }
+            
+            if user_data:
+                deploy_data['user_data'] = user_data
+            
+            # Start deployment
+            deploy_url = f"{self.maas_url}/api/2.0/machines/{system_id}/"
+            deploy_response = self.session.post(
+                deploy_url,
+                params={'op': 'deploy'},
+                json=deploy_data
+            )
+            deploy_response.raise_for_status()
+            
+            logger.info(f"Started deployment of machine {system_id}")
+            return True
+            
+        except requests.RequestException as e:
+            logger.error(f"Failed to deploy machine: {e}")
+            return False
+    
+    def create_quenne_cloud_init(self, intent_config: Dict[str, Any]) -> str:
+        """Create cloud-init configuration for Ubuntu-QUENNE."""
+        
+        cloud_init = {
+            '#cloud-config': {
+                'package_update': True,
+                'package_upgrade': True,
+                'packages': [
+                    'ubuntu-advantage-tools',
+                    'linux-tools-generic',
+                    'bpftool',
+                    'clang',
+                    'llvm',
+                    'python3-pip',
+                    'git',
+                ],
+                'runcmd': [
+                    # Install Ubuntu-QUENNE
+                    'git clone https://github.com/ubuntu-infra/quenne.git /opt/quenne',
+                    'cd /opt/quenne',
+                    'pip3 install -r requirements.txt',
+                    'make build',
+                    
+                    # Initialize QUENNE
+                    f'quenne init --config /opt/quenne/configs/ubuntu-quenne.yaml',
+                    
+                    # Apply intent
+                    f'echo "{yaml.dump(intent_config)}" > /tmp/intent.yaml',
+                    'quenne intent apply -f /tmp/intent.yaml',
+                    
+                    # Enable services
+                    'systemctl enable quenne-control-plane',
+                    'systemctl start quenne-control-plane',
+                ],
+                'write_files': [
+                    {
+                        'path': '/etc/quenne/quenne.yaml',
+                        'content': yaml.dump(intent_config),
+                        'permissions': '0644',
+                    },
+                ],
+                'users': [
+                    {
+                        'name': 'quenne',
+                        'groups': ['sudo'],
+                        'shell': '/bin/bash',
+                        'sudo': ['ALL=(ALL) NOPASSWD:ALL'],
+                        'ssh-authorized-keys': intent_config.get('ssh_keys', []),
+                    }
+                ],
+            }
+        }
+        
+        return yaml.dump(cloud_init)
+    
+    def deploy_quenne_cluster(self, intent_config: Dict[str, Any], 
+                            machine_ids: List[str]) -> Dict[str, Any]:
+        """Deploy a Ubuntu-QUENNE cluster on MAAS machines."""
+        
+        results = {
+            'timestamp': datetime.now().isoformat(),
+            'intent_id': intent_config.get('metadata', {}).get('id', 'unknown'),
+            'deployments': [],
+            'successful': 0,
+            'failed': 0,
+        }
+        
+        # Generate cloud-init config
+        cloud_init = self.create_quenne_cloud_init(intent_config)
+        
+        for machine_id in machine_ids:
+            try:
+                # Deploy machine
+                success = self.deploy_machine(
+                    system_id=machine_id,
+                    distro_series=intent_config.get('distro_series', 'jammy'),
+                    hwe_kernel=intent_config.get('hwe_kernel', 'hwe-22.04'),
+                    user_data=cloud_init,
+                )
+                
+                deployment_result = {
+                    'machine_id': machine_id,
+                    'success': success,
+                    'timestamp': datetime.now().isoformat(),
+                }
+                
+                if success:
+                    results['successful'] += 1
+                else:
+                    results['failed'] += 1
+                
+                results['deployments'].append(deployment_result)
+                
+            except Exception as e:
+                logger.error(f"Failed to deploy machine {machine_id}: {e}")
+                results['failed'] += 1
+                results['deployments'].append({
+                    'machine_id': machine_id,
+                    'success': False,
+                    'error': str(e),
+                    'timestamp': datetime.now().isoformat(),
+                })
+        
+        return results
+    
+    def get_available_machines(self, requirements: Dict[str, Any]) -> List[MAASMachine]:
+        """Get machines matching QUENNE requirements."""
+        
+        all_machines = self.get_machines(status_name='Ready')
+        
+        filtered_machines = []
+        for machine in all_machines:
+            # Check CPU requirements
+            if requirements.get('min_cpu', 0) > machine.cpu_count:
+                continue
+            
+            # Check memory requirements
+            if requirements.get('min_memory_gb', 0) > machine.memory_gb:
+                continue
+            
+            # Check storage requirements
+            if requirements.get('min_storage_gb', 0) > machine.storage_gb:
+                continue
+            
+            # Check architecture
+            if 'architecture' in requirements:
+                if requirements['architecture'] not in machine.architecture:
+                    continue
+            
+            # Check tags
+            if 'required_tags' in requirements:
+                if not all(tag in machine.tags for tag in requirements['required_tags']):
+                    continue
+            
+            filtered_machines.append(machine)
+        
+        return filtered_machines
+    
+    def create_fabric_intent(self, machines: List[MAASMachine], 
+                           fabric_config: Dict[str, Any]) -> Dict[str, Any]:
+        """Create fabric intent for MAAS deployment."""
+        
+        intent = {
+            'metadata': {
+                'id': f"maas-fabric-{datetime.now().strftime('%Y%m%d-%H%M%S')}",
+                'name': 'MAAS Fabric Deployment',
+                'description': 'Ubuntu-QUENNE deployment on MAAS infrastructure',
+                'created_at': datetime.now().isoformat(),
+            },
+            'fabric': {
+                'type': 'maas',
+                'machines': [asdict(machine) for machine in machines],
+                'configuration': fabric_config,
+            },
+            'network': {
+                'topology': fabric_config.get('topology', 'mesh'),
+                'mtu': fabric_config.get('mtu', 9000),
+                'bonding': fabric_config.get('bonding', False),
+            },
+            'storage': {
+                'pool': fabric_config.get('storage_pool', 'default'),
+                'replication': fabric_config.get('replication', 1),
+            },
+        }
+        
+        return intent
+
+
+class MAASOrchestrator:
+    """Orchestrate MAAS deployments for Ubuntu-QUENNE."""
+    
+    def __init__(self, maas_client: MAASClient):
+        self.maas_client = maas_client
+        self.deployments = {}
+    
+    def deploy_cognitive_cluster(self, intent: Dict[str, Any]) -> Dict[str, Any]:
+        """Deploy a cognitive cluster on MAAS."""
+        
+        # Extract requirements from intent
+        requirements = intent.get('constraints', {}).get('resources', {})
+        
+        # Find suitable machines
+        available_machines = self.maas_client.get_available_machines(requirements)
+        
+        if not available_machines:
+            return {
+                'success': False,
+                'error': 'No suitable machines found',
+                'timestamp': datetime.now().isoformat(),
+            }
+        
+        # Select machines based on intent
+        selected_machines = self._select_machines(available_machines, intent)
+        
+        if not selected_machines:
+            return {
+                'success': False,
+                'error': 'Failed to select machines',
+                'timestamp': datetime.now().isoformat(),
+            }
+        
+        # Create fabric intent
+        fabric_config = intent.get('fabric', {})
+        fabric_intent = self.maas_client.create_fabric_intent(
+            selected_machines, fabric_config
+        )
+        
+        # Deploy cluster
+        machine_ids = [machine.system_id for machine in selected_machines]
+        deployment_results = self.maas_client.deploy_quenne_cluster(
+            fabric_intent, machine_ids
+        )
+        
+        # Store deployment
+        deployment_id = fabric_intent['metadata']['id']
+        self.deployments[deployment_id] = {
+            'intent': fabric_intent,
+            'results': deployment_results,
+            'machines': [asdict(m) for m in selected_machines],
+            'status': 'deployed' if deployment_results['successful'] > 0 else 'failed',
+        }
+        
+        return {
+            'deployment_id': deployment_id,
+            'results': deployment_results,
+            'fabric_intent': fabric_intent,
+            'timestamp': datetime.now().isoformat(),
+        }
+    
+    def _select_machines(self, machines: List[MAASMachine], 
+                        intent: Dict[str, Any]) -> List[MAASMachine]:
+        """Select machines based on intent requirements."""
+        
+        topology = intent.get('fabric', {}).get('topology', 'cluster')
+        min_nodes = intent.get('constraints', {}).get('min_nodes', 1)
+        max_nodes = intent.get('constraints', {}).get('max_nodes', len(machines))
+        
+        selected = []
+        
+        if topology == 'cluster':
+            # Simple cluster - take first N suitable machines
+            selected = machines[:max_nodes]
+        
+        elif topology == 'rack':
+            # One machine per rack for diversity
+            racks = {}
+            for machine in machines:
+                rack = machine.zone
+                if rack not in racks:
+                    racks[rack] = machine
+            
+            selected = list(racks.values())[:max_nodes]
+        
+        elif topology == 'performance':
+            # Select machines with highest resources
+            machines_sorted = sorted(
+                machines, 
+                key=lambda m: (m.cpu_count, m.memory_gb, m.storage_gb),
+                reverse=True
+            )
+            selected = machines_sorted[:max_nodes]
+        
+        elif topology == 'balanced':
+            # Balanced selection across zones
+            zones = {}
+            for machine in machines:
+                zone = machine.zone
+                if zone not in zones:
+                    zones[zone] = []
+                zones[zone].append(machine)
+            
+            # Distribute selection across zones
+            while len(selected) < max_nodes and zones:
+                for zone, zone_machines in list(zones.items()):
+                    if zone_machines:
+                        selected.append(zone_machines.pop(0))
+                        if len(selected) >= max_nodes:
+                            break
+                    else:
+                        del zones[zone]
+        
+        # Ensure minimum nodes
+        if len(selected) < min_nodes:
+            logger.warning(f"Only found {len(selected)} machines, minimum required: {min_nodes}")
+            return []
+        
+        return selected
+    
+    def monitor_deployment(self, deployment_id: str) -> Dict[str, Any]:
+        """Monitor deployment progress."""
+        
+        if deployment_id not in self.deployments:
+            return {
+                'deployment_id': deployment_id,
+                'found': False,
+                'timestamp': datetime.now().isoformat(),
+            }
+        
+        deployment = self.deployments[deployment_id]
+        
+        # Check machine status
+        machines_status = []
+        for machine in deployment['machines']:
+            machine_status = self.maas_client.get_machines(
+                system_id=machine['system_id']
+            )
+            if machine_status:
+                machines_status.append({
+                    'system_id': machine['system_id'],
+                    'status': machine_status[0].status,
+                    'power_state': machine_status[0].power_state,
+                })
+        
+        # Update deployment status
+        all_deployed = all(
+            status['status'] == 'Deployed' 
+            for status in machines_status
+        )
+        
+        deployment['status'] = 'deployed' if all_deployed else 'deploying'
+        deployment['last_check'] = datetime.now().isoformat()
+        deployment['machine_status'] = machines_status
+        
+        return {
+            'deployment_id': deployment_id,
+            'status': deployment['status'],
+            'machine_status': machines_status,
+            'timestamp': datetime.now().isoformat(),
+        }
+
+
+# Command-line interface
+def main():
+    import argparse
+    import sys
+    
+    parser = argparse.ArgumentParser(description='MAAS integration for Ubuntu-QUENNE')
+    subparsers = parser.add_subparsers(dest='command', help='Commands')
+    
+    # Deploy command
+    deploy_parser = subparsers.add_parser('deploy', help='Deploy Ubuntu-QUENNE on MAAS')
+    deploy_parser.add_argument('--maas-url', required=True, help='MAAS URL')
+    deploy_parser.add_argument('--api-key', required=True, help='MAAS API key')
+    deploy_parser.add_argument('--intent-file', required=True, help='Intent YAML file')
+    deploy_parser.add_argument('--machine-ids', nargs='+', help='Specific machine IDs to deploy on')
+    
+    # List command
+    list_parser = subparsers.add_parser('list', help='List MAAS machines')
+    list_parser.add_argument('--maas-url', required=True, help='MAAS URL')
+    list_parser.add_argument('--api-key', required=True, help='MAAS API key')
+    list_parser.add_argument('--status', default='Ready', help='Filter by status')
+    
+    # Monitor command
+    monitor_parser = subparsers.add_parser('monitor', help='Monitor deployment')
+    monitor_parser.add_argument('--maas-url', required=True, help='MAAS URL')
+    monitor_parser.add_argument('--api-key', required=True, help='MAAS API key')
+    monitor_parser.add_argument('--deployment-id', required=True, help='Deployment ID')
+    
+    args = parser.parse_args()
+    
+    if not args.command:
+        parser.print_help()
+        sys.exit(1)
+    
+    # Initialize MAAS client
+    maas_client = MAASClient(args.maas_url, args.api_key)
+    
+    if args.command == 'deploy':
+        # Load intent
+        with open(args.intent_file, 'r') as f:
+            intent = yaml.safe_load(f)
+        
+        # Create orchestrator
+        orchestrator = MAASOrchestrator(maas_client)
+        
+        # Deploy cluster
+        if args.machine_ids:
+            # Deploy on specific machines
+            results = maas_client.deploy_quenne_cluster(intent, args.machine_ids)
+            print(json.dumps(results, indent=2))
+        else:
+            # Auto-select machines
+            results = orchestrator.deploy_cognitive_cluster(intent)
+            print(json.dumps(results, indent=2))
+    
+    elif args.command == 'list':
+        # List machines
+        machines = maas_client.get_machines(status_name=args.status)
+        
+        for machine in machines:
+            print(f"{machine.system_id}: {machine.hostname}")
+            print(f"  Architecture: {machine.architecture}")
+            print(f"  CPU: {machine.cpu_count} cores")
+            print(f"  Memory: {machine.memory_gb:.1f} GB")
+            print(f"  Storage: {machine.storage_gb:.1f} GB")
+            print(f"  Status: {machine.status}")
+            print(f"  Tags: {', '.join(machine.tags)}")
+            print()
+    
+    elif args.command == 'monitor':
+        # Monitor deployment
+        orchestrator = MAASOrchestrator(maas_client)
+        status = orchestrator.monitor_deployment(args.deployment_id)
+        print(json.dumps(status, indent=2))
+
+
+if __name__ == '__main__':
+    main()
+```
+
+```yaml
+# File: deployment/cloud-init/ubuntu-quenne-cloud-config.yaml
+#cloud-config
+
+# Ubuntu-QUENNE Cloud Configuration
+# =================================
+
+# System Information
+hostname: ubuntu-quenne-${instance_id}
+manage_etc_hosts: true
+
+# Users
+users:
+  - name: quenne
+    groups: [sudo, adm, systemd-journal]
+    shell: /bin/bash
+    sudo: ['ALL=(ALL) NOPASSWD:ALL']
+    ssh_import_id: [gh:ubuntu-infra]
+    lock_passwd: false
+    passwd: $6$rounds=4096$quenne$X7qQz8Yq8Yq8Yq8Yq8Yq8Yq8Yq8Yq8Yq8Yq8Yq8Yq8Yq8Yq8Yq8Yq8Yq8Yq8Yq8Yq8Yq8Yq8Yq8Yq8Yq8Yq8Yq8Yq8Yq8Yq8Yq
+
+# Packages
+package_update: true
+package_upgrade: true
+package_reboot_if_required: true
+
+packages:
+  # Core system
+  - linux-generic-hwe-22.04
+  - linux-tools-generic-hwe-22.04
+  - linux-headers-generic-hwe-22.04
+  
+  # Development tools
+  - build-essential
+  - git
+  - python3-dev
+  - python3-pip
+  - python3-venv
+  
+  # eBPF and kernel tools
+  - bpftool
+  - clang
+  - llvm
+  - libbpf-dev
+  - libelf-dev
+  - zlib1g-dev
+  
+  # Container runtime
+  - podman
+  - buildah
+  - skopeo
+  
+  # Networking
+  - net-tools
+  - iptables
+  - nftables
+  
+  # Monitoring
+  - prometheus-node-exporter
+  - htop
+  - iotop
+  - iftop
+  
+  # Security
+  - ubuntu-advantage-tools
+  - auditd
+  - aide
+  - ufw
+  - fail2ban
+  
+  # QUENNE dependencies
+  - redis-server
+  - postgresql
+  - nginx
+
+# Snap packages
+snap:
+  commands:
+    - snap install microk8s --classic --channel=1.28/stable
+    - snap install lxd --channel=latest/stable
+    - snap install kubectl --classic
+    - snap install helm --classic
+
+# Write files
+write_files:
+  - path: /etc/quenne/quenne.yaml
+    content: |
+      version: "1.0.0"
+      environment: "production"
+      
+      components:
+        triad:
+          enabled: true
+          agents:
+            michael:
+              enabled: true
+              config: "/etc/quenne/michael.yaml"
+            gabriel:
+              enabled: true
+              config: "/etc/quenne/gabriel.yaml"
+            raphael:
+              enabled: true
+              config: "/etc/quenne/raphael.yaml"
+        
+        governance:
+          enabled: true
+          intent_repository: "/etc/quenne/intents"
+        
+        consensus:
+          enabled: true
+          protocol: "raft"
+      
+      security:
+        zero_trust:
+          enabled: true
+        
+        ubuntu_pro:
+          enabled: true
+          features:
+            - livepatch
+            - esm-infra
+            - esm-apps
+      
+      monitoring:
+        prometheus:
+          enabled: true
+        grafana:
+          enabled: true
+    permissions: '0644'
+    owner: quenne:quenne
+  
+  - path: /etc/systemd/system/quenne-control-plane.service
+    content: |
+      [Unit]
+      Description=Ubuntu-QUENNE Control Plane
+      After=network.target postgresql.service redis-server.service
+      Requires=postgresql.service redis-server.service
+      
+      [Service]
+      Type=simple
+      User=quenne
+      Group=quenne
+      WorkingDirectory=/opt/quenne
+      Environment=PYTHONPATH=/opt/quenne
+      ExecStart=/usr/bin/python3 -m quenne.api.server
+      Restart=always
+      RestartSec=10
+      
+      # Security
+      CapabilityBoundingSet=CAP_NET_BIND_SERVICE CAP_SYS_ADMIN CAP_NET_ADMIN
+      NoNewPrivileges=true
+      ProtectSystem=strict
+      ProtectHome=true
+      PrivateTmp=true
+      
+      [Install]
+      WantedBy=multi-user.target
+    permissions: '0644'
+  
+  - path: /etc/ufw/applications.d/quenne
+    content: |
+      [QUENNE]
+      title=Ubuntu-QUENNE Cognitive Infrastructure
+      description=Cognitive infrastructure management platform
+      ports=8080/tcp|8081/tcp|8082/tcp|8083/tcp|5000/tcp|9090/tcp|3000/tcp
+    permissions: '0644'
+
+# Run commands
+runcmd:
+  # Create directories
+  - mkdir -p /etc/quenne /var/lib/quenne /var/log/quenne
+  - chown -R quenne:quenne /etc/quenne /var/lib/quenne /var/log/quenne
+  
+  # Clone QUENNE repository
+  - git clone https://github.com/ubuntu-infra/quenne.git /opt/quenne
+  - chown -R quenne:quenne /opt/quenne
+  
+  # Install Python dependencies
+  - cd /opt/quenne
+  - pip3 install -r requirements.txt
+  - pip3 install -e .
+  
+  # Build kernel modules
+  - make build-kernel
+  - make install-kernel
+  
+  # Build eBPF programs
+  - make build-ebpf
+  
+  # Initialize QUENNE
+  - sudo -u quenne quenne init --config /etc/quenne/quenne.yaml
+  
+  # Configure firewall
+  - ufw allow ssh
+  - ufw allow in on eth0 to any port 8080:8083 proto tcp
+  - ufw allow in on eth0 to any port 5000 proto tcp
+  - ufw allow in on eth0 to any port 9090 proto tcp
+  - ufw allow in on eth0 to any port 3000 proto tcp
+  - ufw --force enable
+  
+  # Enable services
+  - systemctl daemon-reload
+  - systemctl enable quenne-control-plane
+  - systemctl start quenne-control-plane
+  
+  # Setup Ubuntu Pro (if token provided)
+  - |
+    if [ -n "${ubuntu_pro_token}" ]; then
+      pro attach "${ubuntu_pro_token}"
+      pro enable livepatch
+      pro enable esm-infra
+      pro enable esm-apps
+    fi
+  
+  # Create initial intent
+  - |
+    cat > /etc/quenne/intents/initial.yaml << 'EOF'
+    metadata:
+      id: "cloud-init-cluster"
+      name: "Cloud-Init Deployed Cluster"
+      created_at: "$(date -Iseconds)"
+    
+    priority: MEDIUM
+    
+    objectives:
+      maximize: "availability"
+      target: "nodes_healthy = 1"
+    
+    constraints:
+      resources:
+        min_cpu: 1
+        min_memory_gb: 2
+    
+    adaptation_rules:
+      - trigger: "cpu_usage > 80% for 5 minutes"
+        actions:
+          - type: "notify"
+            parameters:
+              channel: "console"
+              message: "High CPU usage detected"
+    EOF
+  
+  # Apply initial intent
+  - sudo -u quenne quenne intent apply -f /etc/quenne/intents/initial.yaml
+  
+  # Print completion message
+  - echo "Ubuntu-QUENNE deployment completed!"
+  - echo "API available at: http://$(hostname -I | awk '{print $1}'):8080"
+  - echo "Dashboard available at: http://$(hostname -I | awk '{print $1}'):3000"
+
+# Final message
+final_message: |
+  Ubuntu-QUENNE deployment completed successfully!
+  
+  System Information:
+  - Hostname: $(hostname)
+  - IP Address: $(hostname -I)
+  - QUENNE API: http://$(hostname -I):8080
+  - Prometheus: http://$(hostname -I):9090
+  - Grafana: http://$(hostname -I):3000
+  
+  To get started:
+  1. SSH to the system: ssh quenne@$(hostname -I)
+  2. Check status: quenne doctor
+  3. Create your first intent: quenne intent apply -f /path/to/intent.yaml
+  
+  Documentation: https://quenne.ubuntu.com/docs
+```
+
+```python
+#!/usr/bin/env python3
+# File: src/quenne/security/ubuntu_pro.py
+"""
+Ubuntu Pro security integration for Ubuntu-QUENNE.
+"""
+
+import json
+import subprocess
+import yaml
+from typing import Dict, List, Optional, Any
+from dataclasses import dataclass, asdict
+from datetime import datetime
+import logging
+from pathlib import Path
+
+logger = logging.getLogger(__name__)
+
+@dataclass
+class UbuntuProService:
+    """Ubuntu Pro service information."""
+    name: str
+    description: str
+    entitled: bool
+    enabled: bool
+    status: str
+
+@dataclass
+class SecurityCompliance:
+    """Security compliance status."""
+    framework: str
+    level: str
+    score: float
+    passed: int
+    failed: int
+    total: int
+    last_scan: str
+
+class UbuntuProManager:
+    """Manage Ubuntu Pro security features."""
+    
+    def __init__(self, token: Optional[str] = None):
+        self.token = token
+        self.services = {}
+        self._check_ubuntu_pro_client()
+    
+    def _check_ubuntu_pro_client(self) -> bool:
+        """Check if Ubuntu Pro client is installed."""
+        try:
+            subprocess.run(
+                ["pro", "--version"],
+                capture_output=True,
+                text=True,
+                check=True
+            )
+            return True
+        except (subprocess.CalledProcessError, FileNotFoundError):
+            logger.warning("Ubuntu Pro client not installed")
+            return False
+    
+    def install_client(self) -> bool:
+        """Install Ubuntu Pro client."""
+        try:
+            subprocess.run(
+                ["apt", "update"],
+                capture_output=True,
+                text=True,
+                check=True
+            )
+            
+            subprocess.run(
+                ["apt", "install", "-y", "ubuntu-advantage-tools"],
+                capture_output=True,
+                text=True,
+                check=True
+            )
+            
+            logger.info("Ubuntu Pro client installed successfully")
+            return True
+        except subprocess.CalledProcessError as e:
+            logger.error(f"Failed to install Ubuntu Pro client: {e}")
+            return False
+    
+    def attach(self, token: Optional[str] = None) -> bool:
+        """Attach Ubuntu Pro subscription."""
+        token = token or self.token
+        if not token:
+            logger.error("No Ubuntu Pro token provided")
+            return False
+        
+        try:
+            result = subprocess.run(
+                ["pro", "attach", token],
+                capture_output=True,
+                text=True,
+                check=True
+            )
+            
+            logger.info("Ubuntu Pro attached successfully")
+            return True
+        except subprocess.CalledProcessError as e:
+            logger.error(f"Failed to attach Ubuntu Pro: {e}")
+            return False
+    
+    def get_status(self) -> Dict[str, Any]:
+        """Get Ubuntu Pro status."""
+        try:
+            result = subprocess.run(
+                ["pro", "status", "--format", "json"],
+                capture_output=True,
+                text=True,
+                check=True
+            )
+            
+            status = json.loads(result.stdout)
+            
+            # Parse services
+            services = []
+            for service_name, service_data in status.get("services", {}).items():
+                service = UbuntuProService(
+                    name=service_name,
+                    description=service_data.get("description", ""),
+                    entitled=service_data.get("entitled") == "yes",
+                    enabled=service_data.get("status") == "enabled",
+                    status=service_data.get("status", "disabled"),
+                )
+                services.append(service)
+                self.services[service_name] = service
+            
+            return {
+                "attached": status.get("attached", False),
+                "account": status.get("account", {}),
+                "services": [asdict(s) for s in services],
+                "machine_id": status.get("machine_id"),
+                "origin": status.get("origin"),
+                "timestamp": datetime.now().isoformat(),
+            }
+        except (subprocess.CalledProcessError, json.JSONDecodeError) as e:
+            logger.error(f"Failed to get Ubuntu Pro status: {e}")
+            return {"error": str(e), "attached": False}
+    
+    def enable_service(self, service_name: str) -> bool:
+        """Enable an Ubuntu Pro service."""
+        try:
+            subprocess.run(
+                ["pro", "enable", service_name, "--assume-yes"],
+                capture_output=True,
+                text=True,
+                check=True
+            )
+            
+            logger.info(f"Enabled Ubuntu Pro service: {service_name}")
+            return True
+        except subprocess.CalledProcessError as e:
+            logger.error(f"Failed to enable service {service_name}: {e}")
+            return False
+    
+    def enable_all_security_services(self) -> Dict[str, bool]:
+        """Enable all security-related Ubuntu Pro services."""
+        security_services = {
+            "livepatch": "Live kernel patching",
+            "fips": "FIPS 140-2 cryptographic modules",
+            "cis": "CIS benchmark compliance",
+            "esm-infra": "Extended Security Maintenance for infrastructure",
+            "esm-apps": "Extended Security Maintenance for applications",
+        }
+        
+        results = {}
+        for service, description in security_services.items():
+            results[service] = self.enable_service(service)
+        
+        return results
+    
+    def setup_livepatch(self) -> Dict[str, Any]:
+        """Setup Livepatch for kernel security updates."""
+        try:
+            # Install canonical-livepatch if not installed
+            subprocess.run(
+                ["apt", "install", "-y", "canonical-livepatch"],
+                capture_output=True,
+                text=True,
+                check=True
+            )
+            
+            # Enable livepatch
+            result = subprocess.run(
+                ["canonical-livepatch", "enable"],
+                capture_output=True,
+                text=True,
+                check=True
+            )
+            
+            # Get status
+            status_result = subprocess.run(
+                ["canonical-livepatch", "status", "--format", "json"],
+                capture_output=True,
+                text=True,
+                check=True
+            )
+            
+            status = json.loads(status_result.stdout)
+            
+            return {
+                "enabled": True,
+                "client-version": status.get("client-version"),
+                "machine-id": status.get("machine-id"),
+                "architecture": status.get("architecture"),
+                "last-check": status.get("last-check"),
+                "kernel": status.get("kernel"),
+                "livepatch": status.get("livepatch"),
+            }
+        except subprocess.CalledProcessError as e:
+            logger.error(f"Failed to setup Livepatch: {e}")
+            return {"enabled": False, "error": str(e)}
+    
+    def setup_fips(self) -> Dict[str, Any]:
+        """Setup FIPS 140-2 compliance."""
+        try:
+            # Check if FIPS is entitled
+            status = self.get_status()
+            fips_entitled = any(
+                s["name"] == "fips" and s["entitled"]
+                for s in status.get("services", [])
+            )
+            
+            if not fips_entitled:
+                return {"enabled": False, "reason": "not_entitled"}
+            
+            # Enable FIPS
+            self.enable_service("fips")
+            
+            # Install FIPS kernel
+            subprocess.run(
+                ["apt", "update"],
+                capture_output=True,
+                text=True,
+                check=True
+            )
+            
+            subprocess.run(
+                ["apt", "install", "-y", "linux-image-generic-fips"],
+                capture_output=True,
+                text=True,
+                check=True
+            )
+            
+            # Configure FIPS modules
+            fips_config = {
+                "kernel": "linux-image-generic-fips",
+                "openssl": "openssl-fips",
+                "libssl": "libssl-fips",
+                "status": "installed",
+                "reboot_required": True,
+            }
+            
+            return fips_config
+        except subprocess.CalledProcessError as e:
+            logger.error(f"Failed to setup FIPS: {e}")
+            return {"enabled": False, "error": str(e)}
+    
+    def run_cis_audit(self) -> Dict[str, Any]:
+        """Run CIS benchmark compliance audit."""
+        try:
+            # Install audit tools if not present
+            subprocess.run(
+                ["apt", "install", "-y", "libpam-cracklib", "auditd", "aide"],
+                capture_output=True,
+                text=True,
+                check=True
+            )
+            
+            # Run basic CIS checks
+            checks = self._perform_cis_checks()
+            
+            compliance = SecurityCompliance(
+                framework="cis-ubuntu-linux-20.04",
+                level="level1_server",
+                score=checks["score"],
+                passed=checks["passed"],
+                failed=checks["failed"],
+                total=checks["total"],
+                last_scan=datetime.now().isoformat(),
+            )
+            
+            # Generate report
+            report = {
+                "compliance": asdict(compliance),
+                "checks": checks["details"],
+                "recommendations": checks["recommendations"],
+                "timestamp": datetime.now().isoformat(),
+            }
+            
+            # Save report
+            report_dir = Path("/etc/quenne/compliance/cis")
+            report_dir.mkdir(parents=True, exist_ok=True)
+            
+            report_file = report_dir / f"audit_{datetime.now().strftime('%Y%m%d_%H%M%S')}.json"
+            with open(report_file, "w") as f:
+                json.dump(report, f, indent=2)
+            
+            return report
+        except Exception as e:
+            logger.error(f"Failed to run CIS audit: {e}")
+            return {"error": str(e)}
+    
+    def _perform_cis_checks(self) -> Dict[str, Any]:
+        """Perform CIS compliance checks."""
+        checks = {
+            "details": [],
+            "passed": 0,
+            "failed": 0,
+            "total": 0,
+            "score": 0,
+            "recommendations": [],
+        }
+        
+        # Check 1: Password policies
+        check1 = self._check_password_policies()
+        checks["details"].append(check1)
+        checks["total"] += 1
+        if check1["status"] == "PASS":
+            checks["passed"] += 1
+        else:
+            checks["failed"] += 1
+            checks["recommendations"].append(check1.get("recommendation"))
+        
+        # Check 2: SSH configuration
+        check2 = self._check_ssh_configuration()
+        checks["details"].append(check2)
+        checks["total"] += 1
+        if check2["status"] == "PASS":
+            checks["passed"] += 1
+        else:
+            checks["failed"] += 1
+            checks["recommendations"].append(check2.get("recommendation"))
+        
+        # Check 3: Audit configuration
+        check3 = self._check_audit_configuration()
+        checks["details"].append(check3)
+        checks["total"] += 1
+        if check3["status"] == "PASS":
+            checks["passed"] += 1
+        else:
+            checks["failed"] += 1
+            checks["recommendations"].append(check3.get("recommendation"))
+        
+        # Check 4: File permissions
+        check4 = self._check_file_permissions()
+        checks["details"].append(check4)
+        checks["total"] += 1
+        if check4["status"] == "PASS":
+            checks["passed"] += 1
+        else:
+            checks["failed"] += 1
+            checks["recommendations"].append(check4.get("recommendation"))
+        
+        # Calculate score
+        if checks["total"] > 0:
+            checks["score"] = (checks["passed"] / checks["total"]) * 100
+        
+        return checks
+    
+    def _check_password_policies(self) -> Dict[str, Any]:
+        """Check password policies."""
+        try:
+            with open("/etc/login.defs", "r") as f:
+                content = f.read()
+            
+            checks = {
+                "PASS_MAX_DAYS": False,
+                "PASS_MIN_DAYS": False,
+                "PASS_WARN_AGE": False,
+            }
+            
+            for line in content.split("\n"):
+                if line.startswith("PASS_MAX_DAYS"):
+                    value = int(line.split()[1])
+                    checks["PASS_MAX_DAYS"] = value <= 90
+                elif line.startswith("PASS_MIN_DAYS"):
+                    value = int(line.split()[1])
+                    checks["PASS_MIN_DAYS"] = value >= 7
+                elif line.startswith("PASS_WARN_AGE"):
+                    value = int(line.split()[1])
+                    checks["PASS_WARN_AGE"] = value >= 7
+            
+            passed = all(checks.values())
+            
+            return {
+                "id": "CIS-5.4.1",
+                "description": "Password Policies",
+                "status": "PASS" if passed else "FAIL",
+                "details": checks,
+                "recommendation": "Configure password policies in /etc/login.defs" if not passed else None,
+            }
+        except Exception as e:
+            return {
+                "id": "CIS-5.4.1",
+                "description": "Password Policies",
+                "status": "ERROR",
+                "error": str(e),
+            }
+    
+    def _check_ssh_configuration(self) -> Dict[str, Any]:
+        """Check SSH configuration."""
+        try:
+            with open("/etc/ssh/sshd_config", "r") as f:
+                content = f.read()
+            
+            checks = {
+                "PermitRootLogin": False,
+                "Protocol": False,
+                "X11Forwarding": False,
+            }
+            
+            for line in content.split("\n"):
+                line = line.strip()
+                if line.startswith("PermitRootLogin"):
+                    value = line.split()[1]
+                    checks["PermitRootLogin"] = value.lower() in ["no", "prohibit-password"]
+                elif line.startswith("Protocol"):
+                    value = line.split()[1]
+                    checks["Protocol"] = value == "2"
+                elif line.startswith("X11Forwarding"):
+                    value = line.split()[1]
+                    checks["X11Forwarding"] = value.lower() == "no"
+            
+            passed = all(checks.values())
+            
+            return {
+                "id": "CIS-5.2.1",
+                "description": "SSH Configuration",
+                "status": "PASS" if passed else "FAIL",
+                "details": checks,
+                "recommendation": "Harden SSH configuration in /etc/ssh/sshd_config" if not passed else None,
+            }
+        except Exception as e:
+            return {
+                "id": "CIS-5.2.1",
+                "description": "SSH Configuration",
+                "status": "ERROR",
+                "error": str(e),
+            }
+    
+    def _check_audit_configuration(self) -> Dict[str, Any]:
+        """Check audit configuration."""
+        try:
+            # Check if auditd is running
+            result = subprocess.run(
+                ["systemctl", "is-active", "auditd"],
+                capture_output=True,
+                text=True,
+                check=False
+            )
+            
+            auditd_active = result.returncode == 0
+            
+            # Check audit rules
+            audit_rules_exist = Path("/etc/audit/audit.rules").exists() or \
+                               Path("/etc/audit/rules.d/").exists()
+            
+            checks = {
+                "auditd_active": auditd_active,
+                "audit_rules_exist": audit_rules_exist,
+            }
+            
+            passed = all(checks.values())
+            
+            return {
+                "id": "CIS-4.1.1",
+                "description": "Audit Configuration",
+                "status": "PASS" if passed else "FAIL",
+                "details": checks,
+                "recommendation": "Enable and configure auditd" if not passed else None,
+            }
+        except Exception as e:
+            return {
+                "id": "CIS-4.1.1",
+                "description": "Audit Configuration",
+                "status": "ERROR",
+                "error": str(e),
+            }
+    
+    def _check_file_permissions(self) -> Dict[str, Any]:
+        """Check critical file permissions."""
+        critical_files = {
+            "/etc/passwd": "644",
+            "/etc/shadow": "640",
+            "/etc/group": "644",
+            "/etc/gshadow": "640",
+            "/etc/sudoers": "440",
+        }
+        
+        checks = {}
+        for file_path, expected_perm in critical_files.items():
+            if Path(file_path).exists():
+                stat = Path(file_path).stat()
+                actual_perm = oct(stat.st_mode)[-3:]
+                checks[file_path] = actual_perm == expected_perm
+            else:
+                checks[file_path] = False
+        
+        passed = all(checks.values())
+        
+        return {
+            "id": "CIS-6.1.1",
+            "description": "File Permissions",
+            "status": "PASS" if passed else "FAIL",
+            "details": checks,
+            "recommendation": "Fix file permissions for critical system files" if not passed else None,
+        }
+    
+    def generate_security_report(self) -> Dict[str, Any]:
+        """Generate comprehensive security report."""
+        ubuntu_pro_status = self.get_status()
+        cis_audit = self.run_cis_audit()
+        livepatch_status = self.setup_livepatch()
+        fips_status = self.setup_fips()
+        
+        report = {
+            "timestamp": datetime.now().isoformat(),
+            "hostname": subprocess.run(
+                ["hostname"], capture_output=True, text=True
+            ).stdout.strip(),
+            "ubuntu_pro": ubuntu_pro_status,
+            "cis_compliance": cis_audit,
+            "livepatch": livepatch_status,
+            "fips": fips_status,
+            "security_services": self._get_security_services_status(),
+            "recommendations": self._generate_security_recommendations(
+                ubuntu_pro_status, cis_audit
+            ),
+            "risk_level": self._calculate_risk_level(
+                ubuntu_pro_status, cis_audit
+            ),
+        }
+        
+        # Save report
+        report_dir = Path("/etc/quenne/security/reports")
+        report_dir.mkdir(parents=True, exist_ok=True)
+        
+        report_file = report_dir / f"security_report_{datetime.now().strftime('%Y%m%d_%H%M%S')}.json"
+        with open(report_file, "w") as f:
+            json.dump(report, f, indent=2)
+        
+        return report
+    
+    def _get_security_services_status(self) -> Dict[str, bool]:
+        """Get status of security services."""
+        services = {
+            "ufw": False,
+            "apparmor": False,
+            "auditd": False,
+            "fail2ban": False,
+            "unattended_upgrades": False,
+        }
+        
+        for service in services.keys():
+            result = subprocess.run(
+                ["systemctl", "is-active", service],
+                capture_output=True,
+                text=True,
+                check=False
+            )
+            services[service] = result.returncode == 0
+        
+        return services
+    
+    def _generate_security_recommendations(self, ubuntu_pro_status: Dict[str, Any],
+                                         cis_audit: Dict[str, Any]) -> List[str]:
+        """Generate security recommendations."""
+        recommendations = []
+        
+        # Check Ubuntu Pro attachment
+        if not ubuntu_pro_status.get("attached"):
+            recommendations.append("Attach Ubuntu Pro subscription for extended security features")
+        
+        # Check CIS compliance score
+        cis_score = cis_audit.get("compliance", {}).get("score", 0)
+        if cis_score < 80:
+            recommendations.append(f"Improve CIS compliance (current score: {cis_score}%)")
+        
+        # Check security services
+        services_status = self._get_security_services_status()
+        for service, active in services_status.items():
+            if not active:
+                recommendations.append(f"Enable and start {service} service")
+        
+        # Check for FIPS if needed
+        if "fips" not in ubuntu_pro_status.get("enabled_services", []):
+            recommendations.append("Consider enabling FIPS for cryptographic compliance")
+        
+        return recommendations
+    
+    def _calculate_risk_level(self, ubuntu_pro_status: Dict[str, Any],
+                            cis_audit: Dict[str, Any]) -> str:
+        """Calculate overall risk level."""
+        risk_score = 0
+        
+        # Ubuntu Pro attachment (30 points)
+        if not ubuntu_pro_status.get("attached"):
+            risk_score += 30
+        
+        # CIS compliance (40 points)
+        cis_score = cis_audit.get("compliance", {}).get("score", 0)
+        risk_score += (100 - cis_score) * 0.4
+        
+        # Security services (30 points)
+        services_status = self._get_security_services_status()
+        inactive_services = sum(1 for active in services_status.values() if not active)
+        risk_score += (inactive_services / len(services_status)) * 30
+        
+        # Determine risk level
+        if risk_score >= 70:
+            return "CRITICAL"
+        elif risk_score >= 50:
+            return "HIGH"
+        elif risk_score >= 30:
+            return "MEDIUM"
+        elif risk_score >= 10:
+            return "LOW"
+        else:
+            return "MINIMAL"
+
+
+# Command-line interface
+def main():
+    import argparse
+    import sys
+    
+    parser = argparse.ArgumentParser(description='Ubuntu Pro security management for Ubuntu-QUENNE')
+    subparsers = parser.add_subparsers(dest='command', help='Commands')
+    
+    # Status command
+    status_parser = subparsers.add_parser('status', help='Get Ubuntu Pro status')
+    
+    # Attach command
+    attach_parser = subparsers.add_parser('attach', help='Attach Ubuntu Pro subscription')
+    attach_parser.add_argument('--token', help='Ubuntu Pro token')
+    
+    # Enable command
+    enable_parser = subparsers.add_parser('enable', help='Enable Ubuntu Pro services')
+    enable_parser.add_argument('services', nargs='*', help='Services to enable')
+    
+    # Audit command
+    audit_parser = subparsers.add_parser('audit', help='Run security audit')
+    
+    # Report command
+    report_parser = subparsers.add_parser('report', help='Generate security report')
+    
+    args = parser.parse_args()
+    
+    if not args.command:
+        parser.print_help()
+        sys.exit(1)
+    
+    # Initialize manager
+    manager = UbuntuProManager()
+    
+    if args.command == 'status':
+        status = manager.get_status()
+        print(json.dumps(status, indent=2))
+    
+    elif args.command == 'attach':
+        success = manager.attach(args.token)
+        print(json.dumps({"attached": success}, indent=2))
+    
+    elif args.command == 'enable':
+        if args.services:
+            results = {}
+            for service in args.services:
+                results[service] = manager.enable_service(service)
+        else:
+            results = manager.enable_all_security_services()
+        
+        print(json.dumps(results, indent=2))
+    
+    elif args.command == 'audit':
+        audit = manager.run_cis_audit()
+        print(json.dumps(audit, indent=2))
+    
+    elif args.command == 'report':
+        report = manager.generate_security_report()
+        print(json.dumps(report, indent=2))
+
+
+if __name__ == '__main__':
+    main()
+```
+
+```bash
+#!/bin/bash
+# File: src/scripts/deploy-ubuntu.sh
+#!/bin/bash
+set -e
+
+# Ubuntu-QUENNE Deployment Script
+# ================================
+
+# Colors for output
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[1;33m'
+BLUE='\033[0;34m'
+NC='\033[0m' # No Color
+
+# Logging functions
+log_info() {
+    echo -e "${BLUE}[INFO]${NC} $1"
+}
+
+log_success() {
+    echo -e "${GREEN}[SUCCESS]${NC} $1"
+}
+
+log_warning() {
+    echo -e "${YELLOW}[WARNING]${NC} $1"
+}
+
+log_error() {
+    echo -e "${RED}[ERROR]${NC} $1"
+}
+
+# Configuration
+QUENNE_VERSION="1.0.0"
+UBUNTU_VERSION="22.04"
+INSTALL_DIR="/opt/quenne"
+CONFIG_DIR="/etc/quenne"
+LOG_DIR="/var/log/quenne"
+DATA_DIR="/var/lib/quenne"
+
+# Deployment modes
+DEPLOY_MODE="standard"  # standard, snap, microk8s, maas
+
+# Parse command line arguments
+while [[ $# -gt 0 ]]; do
+    case $1 in
+        --mode)
+            DEPLOY_MODE="$2"
+            shift 2
+            ;;
+        --version)
+            QUENNE_VERSION="$2"
+            shift 2
+            ;;
+        --config)
+            CONFIG_FILE="$2"
+            shift 2
+            ;;
+        --intent)
+            INTENT_FILE="$2"
+            shift 2
+            ;;
+        --help)
+            show_help
+            exit 0
+            ;;
+        *)
+            log_error "Unknown option: $1"
+            show_help
+            exit 1
+            ;;
+    esac
+done
+
+show_help() {
+    cat << EOF
+Ubuntu-QUENNE Deployment Script
+
+Usage: $0 [OPTIONS]
+
+Options:
+  --mode MODE      Deployment mode (standard, snap, microk8s, maas) [default: standard]
+  --version VER    QUENNE version [default: 1.0.0]
+  --config FILE    Configuration file
+  --intent FILE    Intent file to apply after deployment
+  --help           Show this help message
+
+Examples:
+  $0 --mode standard
+  $0 --mode snap --intent my-intent.yaml
+  $0 --mode microk8s --config cluster-config.yaml
+EOF
+}
+
+check_requirements() {
+    log_info "Checking system requirements..."
+    
+    # Check OS
+    if [[ ! -f /etc/os-release ]]; then
+        log_error "Cannot determine OS"
+        exit 1
+    fi
+    
+    source /etc/os-release
+    if [[ "$ID" != "ubuntu" ]]; then
+        log_error "This script requires Ubuntu"
+        exit 1
+    fi
+    
+    # Check Ubuntu version
+    UBUNTU_VERSION=$(lsb_release -rs)
+    if [[ "$UBUNTU_VERSION" != "22.04" && "$UBUNTU_VERSION" != "24.04" ]]; then
+        log_warning "Ubuntu $UBUNTU_VERSION detected, only 22.04 and 24.04 are fully supported"
+    fi
+    
+    # Check kernel version
+    KERNEL_VERSION=$(uname -r)
+    log_info "Kernel version: $KERNEL_VERSION"
+    
+    # Check memory
+    MEMORY_KB=$(grep MemTotal /proc/meminfo | awk '{print $2}')
+    MEMORY_GB=$((MEMORY_KB / 1024 / 1024))
+    if [[ $MEMORY_GB -lt 8 ]]; then
+        log_warning "Low memory detected: ${MEMORY_GB}GB (8GB recommended)"
+    else
+        log_info "Memory: ${MEMORY_GB}GB"
+    fi
+    
+    # Check storage
+    STORAGE_KB=$(df / | tail -1 | awk '{print $2}')
+    STORAGE_GB=$((STORAGE_KB / 1024 / 1024))
+    if [[ $STORAGE_GB -lt 50 ]]; then
+        log_warning "Low storage detected: ${STORAGE_GB}GB (50GB recommended)"
+    else
+        log_info "Storage: ${STORAGE_GB}GB"
+    fi
+    
+    # Check CPU
+    CPU_CORES=$(nproc)
+    log_info "CPU cores: $CPU_CORES"
+    
+    log_success "System requirements check passed"
+}
+
+install_dependencies() {
+    log_info "Installing dependencies..."
+    
+    # Update package lists
+    apt update
+    
+    # Install base dependencies
+    apt install -y \
+        git \
+        curl \
+        wget \
+        software-properties-common \
+        apt-transport-https \
+        ca-certificates \
+        gnupg \
+        lsb-release
+    
+    # Install development tools
+    apt install -y \
+        build-essential \
+        python3-dev \
+        python3-pip \
+        python3-venv \
+        python3-setuptools \
+        pkg-config \
+        libssl-dev \
+        libffi-dev
+    
+    # Install kernel development packages
+    apt install -y \
+        linux-headers-generic \
+        linux-tools-generic \
+        bpftool \
+        clang \
+        llvm \
+        libbpf-dev \
+        libelf-dev \
+        zlib1g-dev
+    
+    # Install container runtime
+    apt install -y \
+        podman \
+        buildah \
+        skopeo \
+        slirp4netns \
+        fuse-overlayfs
+    
+    # Install monitoring tools
+    apt install -y \
+        prometheus-node-exporter \
+        htop \
+        iotop \
+        iftop \
+        nethogs
+    
+    log_success "Dependencies installed"
+}
+
+setup_system() {
+    log_info "Setting up system..."
+    
+    # Create user and groups
+    if ! id quenne &>/dev/null; then
+        useradd -r -s /usr/sbin/nologin -d "$DATA_DIR" quenne
+    fi
+    
+    # Create directories
+    mkdir -p "$INSTALL_DIR" "$CONFIG_DIR" "$LOG_DIR" "$DATA_DIR"
+    
+    # Set permissions
+    chown -R quenne:quenne "$CONFIG_DIR" "$LOG_DIR" "$DATA_DIR"
+    chmod 755 "$INSTALL_DIR"
+    
+    # Create systemd directories
+    mkdir -p /etc/systemd/system/quenne.service.d
+    
+    log_success "System setup complete"
+}
+
+install_from_source() {
+    log_info "Installing Ubuntu-QUENNE from source..."
+    
+    # Clone repository
+    if [[ ! -d "$INSTALL_DIR/.git" ]]; then
+        git clone https://github.com/ubuntu-infra/quenne.git "$INSTALL_DIR"
+    fi
+    
+    cd "$INSTALL_DIR"
+    
+    # Checkout specific version if needed
+    if [[ "$QUENNE_VERSION" != "latest" ]]; then
+        git checkout "v$QUENNE_VERSION"
+    fi
+    
+    # Update submodules
+    git submodule update --init --recursive
+    
+    # Install Python dependencies
+    pip3 install -r requirements.txt
+    
+    # Install in development mode
+    pip3 install -e .
+    
+    # Build kernel modules
+    make build-kernel
+    
+    # Install kernel modules
+    make install-kernel
+    
+    # Build eBPF programs
+    make build-ebpf
+    
+    # Install eBPF programs
+    cp ebpf/programs/*.o "$CONFIG_DIR/ebpf/"
+    
+    log_success "Source installation complete"
+}
+
+install_snap() {
+    log_info "Installing Ubuntu-QUENNE snap..."
+    
+    # Install snapd if not present
+    if ! command -v snap &> /dev/null; then
+        apt install -y snapd
+    fi
+    
+    # Install QUENNE snap
+    snap install ubuntu-quenne --channel=edge
+    
+    # Connect interfaces
+    snap connect ubuntu-quenne:kernel-module-load
+    snap connect ubuntu-quenne:hardware-observe
+    snap connect ubuntu-quenne:network-observe
+    snap connect ubuntu-quenne:network-control
+    snap connect ubuntu-quenne:system-observe
+    
+    # Set configuration
+    snap set ubuntu-quenne \
+        log-level=INFO \
+        data-dir="$DATA_DIR" \
+        config-dir="$CONFIG_DIR"
+    
+    log_success "Snap installation complete"
+}
+
+install_microk8s() {
+    log_info "Installing with MicroK8s..."
+    
+    # Install MicroK8s
+    snap install microk8s --classic --channel=1.28/stable
+    
+    # Wait for MicroK8s to be ready
+    microk8s status --wait-ready
+    
+    # Enable addons
+    microk8s enable dns ingress metrics-server storage
+    
+    # Install QUENNE via Helm
+    microk8s helm repo add ubuntu-quenne https://charts.ubuntu.com/quenne
+    microk8s helm repo update
+    
+    # Create namespace
+    microk8s kubectl create namespace quenne
+    
+    # Install QUENNE
+    microk8s helm install quenne ubuntu-quenne/ubuntu-quenne \
+        --namespace quenne \
+        --set version="$QUENNE_VERSION"
+    
+    # Wait for deployment
+    microk8s kubectl wait --for=condition=available \
+        --timeout=300s \
+        deployment/quenne-control-plane \
+        -n quenne
+    
+    log_success "MicroK8s installation complete"
+}
+
+setup_ubuntu_pro() {
+    log_info "Setting up Ubuntu Pro..."
+    
+    # Check if Ubuntu Pro client is installed
+    if ! command -v pro &> /dev/null; then
+        apt install -y ubuntu-advantage-tools
+    fi
+    
+    # Ask for token if not provided
+    if [[ -z "$UBUNTU_PRO_TOKEN" ]]; then
+        read -p "Do you have an Ubuntu Pro token? (y/n): " -n 1 -r
+        echo
+        if [[ $REPLY =~ ^[Yy]$ ]]; then
+            read -p "Enter Ubuntu Pro token: " UBUNTU_PRO_TOKEN
+        fi
+    fi
+    
+    # Attach if token provided
+    if [[ -n "$UBUNTU_PRO_TOKEN" ]]; then
+        pro attach "$UBUNTU_PRO_TOKEN"
+        
+        # Enable security services
+        pro enable livepatch --assume-yes
+        pro enable esm-infra --assume-yes
+        pro enable esm-apps --assume-yes
+        
+        # Enable CIS if available
+        pro enable cis --assume-yes 2>/dev/null || true
+    else
+        log_warning "Ubuntu Pro token not provided, skipping Ubuntu Pro setup"
+        log_info "You can attach later with: sudo pro attach <TOKEN>"
+    fi
+    
+    log_success "Ubuntu Pro setup complete"
+}
+
+configure_firewall() {
+    log_info "Configuring firewall..."
+    
+    # Install UFW if not present
+    if ! command -v ufw &> /dev/null; then
+        apt install -y ufw
+    fi
+    
+    # Enable UFW
+    ufw --force enable
+    
+    # Allow SSH
+    ufw allow ssh
+    
+    # Allow QUENNE ports
+    ufw allow 8080/tcp comment "QUENNE API"
+    ufw allow 8081/tcp comment "Michael API"
+    ufw allow 8082/tcp comment "Gabriel API"
+    ufw allow 8083/tcp comment "Raphael API"
+    ufw allow 5000/tcp comment "Consensus RPC"
+    ufw allow 9090/tcp comment "Prometheus"
+    ufw allow 3000/tcp comment "Grafana"
+    
+    # Default policies
+    ufw default deny incoming
+    ufw default allow outgoing
+    
+    log_success "Firewall configured"
+}
+
+setup_monitoring() {
+    log_info "Setting up monitoring..."
+    
+    # Install Prometheus and Grafana if not present
+    if [[ "$DEPLOY_MODE" != "microk8s" ]]; then
+        # Install Prometheus
+        apt install -y prometheus
+        
+        # Install Grafana
+        wget -q -O - https://packages.grafana.com/gpg.key | apt-key add -
+        echo "deb https://packages.grafana.com/oss/deb stable main" > /etc/apt/sources.list.d/grafana.list
+        apt update
+        apt install -y grafana
+        
+        # Enable services
+        systemctl enable prometheus grafana-server
+        systemctl start prometheus grafana-server
+    fi
+    
+    # Create QUENNE dashboard configuration
+    mkdir -p "$CONFIG_DIR/monitoring"
+    
+    cat > "$CONFIG_DIR/monitoring/prometheus.yml" << EOF
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+
+scrape_configs:
+  - job_name: 'quenne'
+    static_configs:
+      - targets: ['localhost:8080']
+    metrics_path: '/metrics'
+  
+  - job_name: 'node'
+    static_configs:
+      - targets: ['localhost:9100']
+  
+  - job_name: 'triad'
+    static_configs:
+      - targets: ['localhost:8081', 'localhost:8082', 'localhost:8083']
+    metrics_path: '/metrics'
+EOF
+    
+    log_success "Monitoring setup complete"
+}
+
+create_systemd_service() {
+    log_info "Creating systemd service..."
+    
+    cat > /etc/systemd/system/quenne.service << EOF
+[Unit]
+Description=Ubuntu-QUENNE Cognitive Infrastructure Stack
+After=network.target postgresql.service redis-server.service
+Wants=postgresql.service redis-server.service
+Documentation=https://quenne.ubuntu.com/docs
+
+[Service]
+Type=simple
+User=quenne
+Group=quenne
+WorkingDirectory=$INSTALL_DIR
+Environment=PYTHONPATH=$INSTALL_DIR
+Environment=QUENNE_CONFIG=$CONFIG_DIR/quenne.yaml
+ExecStart=/usr/bin/python3 -m quenne.api.server
+Restart=always
+RestartSec=10
+LimitNOFILE=65536
+LimitNPROC=65536
+
+# Security
+CapabilityBoundingSet=CAP_NET_BIND_SERVICE CAP_SYS_ADMIN CAP_NET_ADMIN CAP_BPF
+NoNewPrivileges=true
+ProtectSystem=strict
+ProtectHome=true
+PrivateTmp=true
+PrivateDevices=true
+ProtectKernelTunables=true
+ProtectKernelModules=true
+ProtectControlGroups=true
+RestrictAddressFamilies=AF_UNIX AF_INET AF_INET6
+RestrictNamespaces=true
+RestrictRealtime=true
+LockPersonality=true
+MemoryDenyWriteExecute=true
+SystemCallFilter=@system-service
+
+[Install]
+WantedBy=multi-user.target
+EOF
+    
+    # Create override directory
+    mkdir -p /etc/systemd/system/quenne.service.d
+    
+    # Create environment file
+    cat > /etc/systemd/system/quenne.service.d/environment.conf << EOF
+[Service]
+Environment=QUENNE_LOG_LEVEL=INFO
+Environment=QUENNE_DATA_DIR=$DATA_DIR
+Environment=QUENNE_LOG_DIR=$LOG_DIR
+EOF
+    
+    # Reload systemd
+    systemctl daemon-reload
+    
+    # Enable service
+    systemctl enable quenne.service
+    
+    log_success "Systemd service created"
+}
+
+apply_intent() {
+    if [[ -n "$INTENT_FILE" && -f "$INTENT_FILE" ]]; then
+        log_info "Applying intent: $INTENT_FILE"
+        
+        # Wait for QUENNE to be ready
+        sleep 10
+        
+        # Apply intent
+        quenne intent apply -f "$INTENT_FILE"
+        
+        if [[ $? -eq 0 ]]; then
+            log_success "Intent applied successfully"
+        else
+            log_error "Failed to apply intent"
+        fi
+    fi
+}
+
+show_summary() {
+    log_success "Ubuntu-QUENNE deployment complete!"
+    
+    echo ""
+    echo "========================================="
+    echo "          DEPLOYMENT SUMMARY"
+    echo "========================================="
+    echo ""
+    echo "Mode:              $DEPLOY_MODE"
+    echo "Version:           $QUENNE_VERSION"
+    echo "Installation Dir:  $INSTALL_DIR"
+    echo "Configuration Dir: $CONFIG_DIR"
+    echo "Data Dir:          $DATA_DIR"
+    echo ""
+    
+    if [[ "$DEPLOY_MODE" == "snap" ]]; then
+        echo "Snap Commands:"
+        echo "  Status:     snap services ubuntu-quenne"
+        echo "  Logs:       snap logs ubuntu-quenne"
+        echo "  Config:     snap get ubuntu-quenne"
+        echo ""
+    elif [[ "$DEPLOY_MODE" == "microk8s" ]]; then
+        echo "MicroK8s Commands:"
+        echo "  Status:     microk8s kubectl get pods -n quenne"
+        echo "  Logs:       microk8s kubectl logs deployment/quenne-control-plane -n quenne"
+        echo "  Dashboard:  microk8s dashboard-proxy"
+        echo ""
+    else
+        echo "Systemd Service:"
+        echo "  Start:      systemctl start quenne"
+        echo "  Stop:       systemctl stop quenne"
+        echo "  Status:     systemctl status quenne"
+        echo "  Logs:       journalctl -u quenne -f"
+        echo ""
+    fi
+    
+    echo "Access URLs:"
+    echo "  QUENNE API:     http://$(hostname -I | awk '{print $1}'):8080"
+    echo "  Dashboard:      http://$(hostname -I | awk '{print $1}'):3000"
+    echo "  Prometheus:     http://$(hostname -I | awk '{print $1}'):9090"
+    echo ""
+    
+    if [[ -n "$INTENT_FILE" ]]; then
+        echo "Applied Intent:   $INTENT_FILE"
+        echo "To view intent:   quenne intent list"
+        echo ""
+    fi
+    
+    echo "Next Steps:"
+    echo "1. Visit the dashboard to monitor your infrastructure"
+    echo "2. Create more intents: quenne intent apply -f <intent.yaml>"
+    echo "3. Check system health: quenne doctor"
+    echo "4. Read documentation: https://quenne.ubuntu.com/docs"
+    echo ""
+    echo "========================================="
+}
+
+main() {
+    log_info "Starting Ubuntu-QUENNE deployment"
+    log_info "Deployment mode: $DEPLOY_MODE"
+    log_info "Version: $QUENNE_VERSION"
+    
+    # Check requirements
+    check_requirements
+    
+    # Install dependencies
+    install_dependencies
+    
+    # Setup system
+    setup_system
+    
+    # Setup Ubuntu Pro
+    setup_ubuntu_pro
+    
+    # Install based on mode
+    case "$DEPLOY_MODE" in
+        "snap")
+            install_snap
+            ;;
+        "microk8s")
+            install_microk8s
+            ;;
+        "maas")
+            log_info "MAAS deployment requires separate setup"
+            log_info "Please use the MAAS web interface or CLI"
+            ;;
+        *)
+            install_from_source
+            create_systemd_service
+            ;;
+    esac
+    
+    # Configure firewall
+    configure_firewall
+    
+    # Setup monitoring
+    setup_monitoring
+    
+    # Start services
+    if [[ "$DEPLOY_MODE" == "standard" ]]; then
+        systemctl start quenne.service
+    elif [[ "$DEPLOY_MODE" == "snap" ]]; then
+        snap start ubuntu-quenne
+    fi
+    
+    # Apply intent if provided
+    apply_intent
+    
+    # Show summary
+    show_summary
+}
+
+# Run main function
+main "$@"
+```
+
+```yaml
+# File: configs/ubuntu-quenne.yaml
+# Ubuntu-QUENNE Configuration
+# ===========================
+
+version: "1.0.0"
+environment: "production"
+
+# Ubuntu-specific settings
+ubuntu:
+  version: "22.04"
+  hwe_kernel: true
+  livepatch: true
+  pro_features:
+    enabled: true
+    auto_attach: false
+    services:
+      - "esm-infra"
+      - "esm-apps"
+      - "livepatch"
+      - "cis"
+      - "fips"
+
+# Snap integration
+snap:
+  enabled: true
+  confinement: "strict"
+  interfaces:
+    - "kernel-module-load"
+    - "hardware-observe"
+    - "network-observe"
+    - "network-control"
+    - "system-observe"
+
+# MAAS integration (if available)
+maas:
+  enabled: false
+  url: ""
+  api_key: ""
+  zone: "default"
+
+# Cloud-init integration
+cloud_init:
+  enabled: true
+  user_data_dir: "/etc/cloud/cloud.cfg.d"
+  vendor_data_dir: "/etc/cloud/vendor-data.d"
+
+# Components configuration
+components:
+  triad:
+    enabled: true
+    agents:
+      michael:
+        enabled: true
+        config: "/etc/quenne/michael.yaml"
+        port: 8081
+        snap_interface: "network-bind"
+      gabriel:
+        enabled: true
+        config: "/etc/quenne/gabriel.yaml"
+        port: 8082
+        snap_interface: "network-bind"
+      raphael:
+        enabled: true
+        config: "/etc/quenne/raphael.yaml"
+        port: 8083
+        snap_interface: "network-bind"
+  
+  governance:
+    enabled: true
+    intent_repository: "/etc/quenne/intents"
+    policy_repository: "/etc/quenne/policies"
+    auto_reconcile: true
+    reconcile_interval: 30
+  
+  consensus:
+    enabled: true
+    protocol: "raft"
+    nodes:
+      - "127.0.0.1:5000"
+    election_timeout: 1000
+    heartbeat_interval: 100
+  
+  kernel:
+    enabled: true
+    ebpf:
+      enabled: true
+      program_dir: "/etc/quenne/ebpf"
+      max_programs: 100
+      snap_interface: "system-observe"
+    scheduler:
+      enabled: true
+      ai_weight: 0.7
+      hwe_optimized: true
+    security:
+      enabled: true
+      apparmor: true
+      seccomp: true
+  
+  fabric:
+    enabled: true
+    layers:
+      cloud:
+        enabled: true
+        providers: ["aws", "azure", "gcp", "openstack"]
+      edge:
+        enabled: true
+        max_latency_ms: 100
+        ubuntu_core: true
+      device:
+        enabled: true
+        resource_constrained: true
+        snap_based: true
+
+# Security configuration
+security:
+  zero_trust:
+    enabled: true
+    identity_provider: "spire"
+    authz_provider: "opa"
+  
+  ubuntu_pro:
+    enabled: true
+    auto_attach: false
+    compliance:
+      cis: true
+      fips: false
+      disa_stig: false
+    
+    livepatch:
+      enabled: true
+      auto_enable: true
+    
+    esm:
+      infra: true
+      apps: true
+      auto_update: true
+  
+  apparmor:
+    enabled: true
+    profiles:
+      - "/etc/apparmor.d/usr.bin.quenne"
+      - "/etc/apparmor.d/usr.bin.quenne-*"
+    
+    enforcement: "complain"  # or "enforce"
+  
+  firewall:
+    enabled: true
+    backend: "ufw"  # or "nftables", "iptables"
+    default_policy: "deny"
+    allowed_ports:
+      - 8080  # QUENNE API
+      - 8081  # Michael
+      - 8082  # Gabriel
+      - 8083  # Raphael
+      - 5000  # Consensus
+      - 9090  # Prometheus
+      - 3000  # Grafana
+
+# Performance tuning
+performance:
+  kernel:
+    hwe: true
+    optimized_scheduler: true
+    transparent_hugepages: "madvise"
+    
+  ebpf:
+    jit: true
+    hardening: 1
+    kallsyms: false
+    
+  networking:
+    tcp_congestion: "bbr"
+    tcp_fastopen: true
+    tcp_tw_reuse: true
+    
+  memory:
+    swappiness: 10
+    vfs_cache_pressure: 50
+
+# Monitoring and observability
+monitoring:
+  prometheus:
+    enabled: true
+    port: 9090
+    scrape_interval: "5s"
+    
+    exporters:
+      node: true
+      process: true
+      blackbox: false
+    
+  grafana:
+    enabled: true
+    port: 3000
+    auth:
+      enabled: true
+      admin_password: ""  # Set via cloud-init or snap config
+    
+  logging:
+    driver: "journald"
+    level: "INFO"
+    max_size: "100M"
+    max_files: 10
+    
+  metrics:
+    collection_interval: 10
+    retention_days: 90
+    compression: true
+
+# Backup and recovery
+backup:
+  enabled: true
+  schedule: "0 2 * * *"  # Daily at 2 AM
+  retention_days: 30
+  
+  locations:
+    local:
+      enabled: true
+      path: "/backup/quenne"
+    remote:
+      enabled: false
+      s3:
+        bucket: ""
+        region: "us-east-1"
+  
+  components:
+    intents: true
+    policies: true
+    models: true
+    knowledge_graph: true
+    configurations: true
+
+# Network configuration
+network:
+  api:
+    host: "0.0.0.0"
+    port: 8080
+    ssl:
+      enabled: true
+      cert: "/etc/quenne/certs/quenne.crt"
+      key: "/etc/quenne/certs/quenne.key"
+  
+  internal:
+    cidr: "10.42.0.0/16"
+    service_port_range: "30000-32767"
+  
+  dns:
+    provider: "systemd-resolved"
+    upstream:
+      - "1.1.1.1"
+      - "8.8.8.8"
+
+# Storage configuration
+storage:
+  telemetry:
+    type: "timescaledb"
+    retention_days: 90
+    compression: true
+    
+  knowledge_graph:
+    type: "neo4j"
+    uri: "bolt://localhost:7687"
+    database: "quenne"
+    
+  intents:
+    type: "git"
+    repository: "/etc/quenne/intents"
+    auto_commit: true
+    
+  models:
+    type: "local"
+    path: "/var/lib/quenne/models"
+    cache_size: "10GB"
+
+# Resource limits
+resources:
+  cpu:
+    limit: "4"
+    request: "1"
+  memory:
+    limit: "8Gi"
+    request: "2Gi"
+  storage:
+    limit: "100Gi"
+    request: "20Gi"
+
+# Feature flags
+features:
+  experimental:
+    quantum_scheduling: false
+    neuromorphic_com
+```
